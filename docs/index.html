@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>AI Traffic Watch | Experience Factory</title>
+<style>
+@font-face{font-family:'EFHead';src:url('assets/idigital-light.otf') format('opentype');font-weight:100 300;font-display:swap}
+@font-face{font-family:'EFHead';src:url('assets/idigital-medium.otf') format('opentype');font-weight:400 500;font-display:swap}
+@font-face{font-family:'EFHead';src:url('assets/idigital-bold.otf') format('opentype');font-weight:600 900;font-display:swap}
+@font-face{font-family:'EFBody';src:url('assets/raleway.ttf') format('truetype');font-weight:100 900;font-display:swap}
+
+:root{
+  --red:#E30513; --red2:#F2545E;
+  --teal:#00897B; --teal2:#22A692;
+  --violet:#3D3AC7; --violet2:#7C79EE;
+  --ink:#101212; --ink2:#3A3F44; --muted:#6B7075;
+  --paper:#FFFFFF; --surface:#F6F6F7; --surface2:#EFEFF1; --line:#E2E3E6;
+  --head:'EFHead','Arial Narrow',Arial,sans-serif;
+  --body:'EFBody','Segoe UI',Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+h1,h2,h3,.kicker,.kpi-value,.tag{font-family:var(--head)}
+
+/* ---------- header ---------- */
+header.top{background:var(--ink);color:#fff;padding:26px 0 30px}
+header.top .bar{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+header.top img{height:30px;width:auto}
+header.top .stamp{font-size:12.5px;color:#B9BDC1;text-align:right;line-height:1.5}
+header.top h1{font-size:38px;font-weight:700;letter-spacing:-.4px;margin:22px 0 6px;text-transform:uppercase}
+header.top .sub{color:#D6D8DA;font-size:15.5px;max-width:760px}
+.rule{height:4px;background:var(--red)}
+
+/* ---------- layout ---------- */
+section{padding:38px 0 6px}
+h2{font-size:13px;letter-spacing:2.2px;text-transform:uppercase;color:var(--red);margin:0 0 4px;font-weight:700}
+h2 + .lead{font-size:22px;font-weight:600;font-family:var(--head);margin:0 0 18px;color:var(--ink)}
+.note{color:var(--muted);font-size:13.5px;margin:10px 0 0;max-width:900px}
+
+/* ---------- KPI ---------- */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:14px;margin-top:6px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:6px;padding:16px 16px 14px}
+.kpi.antwerp{border-top-color:var(--red)} .kpi.eupen{border-top-color:var(--teal)} .kpi.ai{border-top-color:var(--violet)}
+.kpi .label{font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--muted);font-weight:700}
+.kpi .kpi-value{font-size:34px;font-weight:700;line-height:1.1;margin:8px 0 2px}
+.kpi .kpi-sub{font-size:13px;color:var(--ink2)}
+.kpi .delta{font-size:12.5px;color:var(--muted);margin-top:6px}
+.kpi .delta b{color:var(--ink);font-weight:700}
+
+/* ---------- charts ---------- */
+.card{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:18px 18px 8px;margin-top:16px}
+.card h3{font-size:16px;margin:0 0 2px;font-weight:600}
+.card .cap{font-size:13px;color:var(--muted);margin:0 0 8px}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 2px}
+.legend span{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--ink2)}
+.legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
+.chart{position:relative}
+.chart svg{display:block;width:100%;height:auto}
+.tip{position:absolute;pointer-events:none;opacity:0;transition:opacity .1s;background:var(--ink);color:#fff;font-size:12.5px;
+     padding:9px 11px;border-radius:5px;line-height:1.5;white-space:nowrap;z-index:5;transform:translate(-50%,-100%)}
+.tip b{font-family:var(--head);font-size:13px}
+.tip .row{display:flex;align-items:center;gap:7px}
+.tip i{width:9px;height:9px;border-radius:2px;display:inline-block}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:860px){.grid2{grid-template-columns:1fr}}
+
+/* ---------- tables ---------- */
+.tablewrap{overflow-x:auto;margin-top:16px;border:1px solid var(--line);border-radius:6px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+thead th{background:var(--ink);color:#fff;font-family:var(--head);font-weight:600;font-size:12px;letter-spacing:.6px;
+         text-transform:uppercase;padding:10px 12px;white-space:nowrap}
+th.num,td.num{text-align:right}
+th.txt,td.txt{text-align:left}
+tbody td{padding:9px 12px;border-top:1px solid var(--line);white-space:nowrap}
+tbody tr.avg{background:var(--surface)}
+tbody tr.last td{font-weight:700;background:#FFF3F3}
+tbody tr.group td{background:var(--surface2);font-family:var(--head);font-weight:600;font-size:12.5px;letter-spacing:.4px;text-transform:uppercase}
+tbody td.dim{color:var(--muted)}
+.tag{display:inline-block;font-size:10.5px;letter-spacing:.8px;text-transform:uppercase;padding:2px 6px;border-radius:3px;
+     background:var(--surface2);color:var(--ink2);margin-left:8px}
+
+/* ---------- method ---------- */
+.method{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:20px 22px;margin-top:18px}
+.method h3{font-family:var(--head);font-size:15px;margin:0 0 10px}
+.method ul{margin:0;padding-left:18px}
+.method li{margin:0 0 9px;font-size:13.5px;color:var(--ink2)}
+.method li b{color:var(--ink)}
+footer{margin-top:42px;background:var(--ink);color:#9BA0A5;font-size:12.5px;padding:20px 0}
+footer a{color:#D6D8DA}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="bar">
+      <img src="assets/logo_wordmark.png" alt="Experience Factory">
+      <div class="stamp" id="stamp"></div>
+    </div>
+    <h1>AI Traffic Watch</h1>
+    <div class="sub">How much of Antwerp's and Eupen's traffic, and of its online revenue, now arrives through AI assistants such as ChatGPT, Copilot, Gemini and Perplexity.</div>
+  </div>
+</header>
+<div class="rule"></div>
+
+<main class="wrap">
+  <section>
+    <h2>Last complete week</h2>
+    <div class="lead" id="weeklead"></div>
+    <div class="kpis" id="kpis"></div>
+    <p class="note" id="kpinote"></p>
+  </section>
+
+  <section>
+    <h2>Traffic</h2>
+    <div class="lead">AI sessions per week, and what share of each venue's traffic they represent</div>
+    <div class="card">
+      <h3>AI sessions per week</h3>
+      <p class="cap" id="cap1"></p>
+      <div class="legend"><span><i style="background:var(--red)"></i>Antwerp</span><span><i style="background:var(--teal)"></i>Eupen</span></div>
+      <div class="chart" id="c_sessions"></div>
+    </div>
+    <div class="card">
+      <h3>AI share of the venue's sessions</h3>
+      <p class="cap">AI sessions divided by all sessions landing on that venue, per week.</p>
+      <div class="legend"><span><i style="background:var(--red)"></i>Antwerp</span><span><i style="background:var(--teal)"></i>Eupen</span></div>
+      <div class="chart" id="c_share"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Money</h2>
+    <div class="lead">Online revenue booked in a session that started at an AI assistant</div>
+    <div class="card">
+      <h3>AI-attributed online revenue, by venue</h3>
+      <p class="cap">GA4 purchase revenue booked in an AI session, per week. A session that lands straight on the booking engine has no venue, so the two bars can add up to slightly less than the site total shown in the tooltip.</p>
+      <div class="legend"><span><i style="background:var(--red)"></i>Antwerp</span><span><i style="background:var(--teal)"></i>Eupen</span></div>
+      <div class="chart" id="c_rev"></div>
+    </div>
+    <div class="card">
+      <h3>Share of all online revenue</h3>
+      <p class="cap">AI revenue divided by total online revenue, both hosts, per week.</p>
+      <div class="chart" id="c_revshare"></div>
+    </div>
+    <p class="note" id="moneynote"></p>
+  </section>
+
+  <section>
+    <h2>B2B focus</h2>
+    <div class="lead">Teambuilding and bedrijfsevent pages, Antwerp and Eupen</div>
+    <div class="card">
+      <h3>Views of the B2B pages inside an AI session</h3>
+      <p class="cap">Page views counted whenever the visitor arrived from an AI assistant, whatever page they landed on.</p>
+      <div class="chart" id="c_b2b"></div>
+    </div>
+    <div class="tablewrap" id="t_b2b"></div>
+    <p class="note" id="b2bnote"></p>
+  </section>
+
+  <section>
+    <h2>Full data</h2>
+    <div class="lead">Every point behind the charts</div>
+    <div class="tablewrap" id="t_main"></div>
+  </section>
+
+  <section>
+    <h2>Method &amp; caveats</h2>
+    <div class="lead">What this measures, and where it under-reports</div>
+    <div class="method" id="method"></div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span id="foot"></span></div></footer>
+
+<script>
+const R = {"generated": "27 Aug 2026, 15:11", "asof": "2026-08-24", "asof_label": "Monday 24 August 2026", "week_label": "17 Aug - 23 Aug 2026", "week_number": 34, "detailed_months": ["Jul 2026", "Aug 2026"], "averaged_months": ["Jan 2026", "Feb 2026", "Mar 2026", "Apr 2026", "May 2026", "Jun 2026"], "buckets": [{"label": "Jan", "sub": "5-week avg", "kind": "avg", "start": "2025-12-29", "end": "2026-02-01", "nweeks": 5, "antwerp": {"ai_sessions": 26.0, "sessions": 4373.0, "share": 0.59, "ai_revenue": 0.0, "revenue": 0.0, "ai_transactions": 0.0, "ai_key_events": 0.2, "ai_engagement": 77.7, "engagement": 72.1}, "eupen": {"ai_sessions": 2.4, "sessions": 1066.0, "share": 0.23, "ai_revenue": 0.0, "revenue": 0.0, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 83.3, "engagement": 76.2}, "all": {"ai_sessions": 29.6, "sessions": 7589.0, "share": 0.39, "ai_revenue": 0.0, "revenue": 21576.9, "ai_transactions": 0.0, "ai_key_events": 0.2, "ai_engagement": 75.0, "engagement": 71.0}, "money": {"ai_revenue_venues": 0.0, "ai_revenue": 0.0, "online_revenue": 21576.9, "share": 0.0, "ai_transactions": 0.0}, "b2b": {"ai_views": 2.4, "ai_sessions": 1.8, "ai_entrances": 0.2, "views": 329.8}}, {"label": "Feb", "sub": "4-week avg", "kind": "avg", "start": "2026-02-02", "end": "2026-03-01", "nweeks": 4, "antwerp": {"ai_sessions": 18.8, "sessions": 3823.0, "share": 0.49, "ai_revenue": 0.0, "revenue": 0.0, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 82.7, "engagement": 71.0}, "eupen": {"ai_sessions": 2.8, "sessions": 886.8, "share": 0.31, "ai_revenue": 0.0, "revenue": 0.0, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 90.9, "engagement": 76.2}, "all": {"ai_sessions": 22.8, "sessions": 6807.2, "share": 0.33, "ai_revenue": 0.0, "revenue": 19044.5, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 79.1, "engagement": 71.1}, "money": {"ai_revenue_venues": 0.0, "ai_revenue": 0.0, "online_revenue": 19044.5, "share": 0.0, "ai_transactions": 0.0}, "b2b": {"ai_views": 2.2, "ai_sessions": 1.2, "ai_entrances": 0.5, "views": 298.5}}, {"label": "Mar", "sub": "4-week avg", "kind": "avg", "start": "2026-03-02", "end": "2026-03-29", "nweeks": 4, "antwerp": {"ai_sessions": 19.5, "sessions": 3491.8, "share": 0.56, "ai_revenue": 0.0, "revenue": 0.0, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 75.6, "engagement": 75.0}, "eupen": {"ai_sessions": 6.2, "sessions": 1178.2, "share": 0.53, "ai_revenue": 0.0, "revenue": 0.0, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 76.0, "engagement": 75.7}, "all": {"ai_sessions": 26.8, "sessions": 6269.5, "share": 0.43, "ai_revenue": 0.0, "revenue": 14480.48, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 72.9, "engagement": 72.7}, "money": {"ai_revenue_venues": 0.0, "ai_revenue": 0.0, "online_revenue": 14480.48, "share": 0.0, "ai_transactions": 0.0}, "b2b": {"ai_views": 1.0, "ai_sessions": 1.2, "ai_entrances": 0.5, "views": 316.8}}, {"label": "Apr", "sub": "5-week avg", "kind": "avg", "start": "2026-03-30", "end": "2026-05-03", "nweeks": 5, "antwerp": {"ai_sessions": 16.4, "sessions": 2726.2, "share": 0.6, "ai_revenue": 0.0, "revenue": 0.0, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 76.8, "engagement": 76.7}, "eupen": {"ai_sessions": 3.6, "sessions": 1051.8, "share": 0.34, "ai_revenue": 0.0, "revenue": 0.0, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 88.9, "engagement": 78.2}, "all": {"ai_sessions": 20.0, "sessions": 5175.8, "share": 0.39, "ai_revenue": 0.0, "revenue": 12214.5, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 79.0, "engagement": 74.4}, "money": {"ai_revenue_venues": 0.0, "ai_revenue": 0.0, "online_revenue": 12214.5, "share": 0.0, "ai_transactions": 0.0}, "b2b": {"ai_views": 1.8, "ai_sessions": 1.0, "ai_entrances": 0.2, "views": 213.0}}, {"label": "May", "sub": "4-week avg", "kind": "avg", "start": "2026-05-04", "end": "2026-05-31", "nweeks": 4, "antwerp": {"ai_sessions": 35.2, "sessions": 9598.2, "share": 0.37, "ai_revenue": 35.25, "revenue": 5160.0, "ai_transactions": 0.25, "ai_key_events": 0.25, "ai_engagement": 73.0, "engagement": 61.0}, "eupen": {"ai_sessions": 12.8, "sessions": 1714.8, "share": 0.74, "ai_revenue": 0.0, "revenue": 3086.75, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 76.5, "engagement": 67.1}, "all": {"ai_sessions": 50.2, "sessions": 11950.5, "share": 0.42, "ai_revenue": 35.25, "revenue": 12556.75, "ai_transactions": 0.25, "ai_key_events": 0.25, "ai_engagement": 71.1, "engagement": 60.9}, "money": {"ai_revenue_venues": 35.25, "ai_revenue": 35.25, "online_revenue": 12556.75, "share": 0.28, "ai_transactions": 0.25}, "b2b": {"ai_views": 5.5, "ai_sessions": 3.5, "ai_entrances": 1.8, "views": 419.2}}, {"label": "Jun", "sub": "4-week avg", "kind": "avg", "start": "2026-06-01", "end": "2026-06-28", "nweeks": 4, "antwerp": {"ai_sessions": 30.2, "sessions": 7186.5, "share": 0.42, "ai_revenue": 31.25, "revenue": 5845.5, "ai_transactions": 0.5, "ai_key_events": 0.5, "ai_engagement": 67.8, "engagement": 57.1}, "eupen": {"ai_sessions": 9.8, "sessions": 1852.2, "share": 0.53, "ai_revenue": 0.0, "revenue": 2992.25, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 69.2, "engagement": 65.0}, "all": {"ai_sessions": 43.2, "sessions": 10062.2, "share": 0.43, "ai_revenue": 31.25, "revenue": 18811.5, "ai_transactions": 0.5, "ai_key_events": 0.5, "ai_engagement": 63.6, "engagement": 58.6}, "money": {"ai_revenue_venues": 31.25, "ai_revenue": 31.25, "online_revenue": 18811.5, "share": 0.17, "ai_transactions": 0.5}, "b2b": {"ai_views": 2.5, "ai_sessions": 2.0, "ai_entrances": 0.0, "views": 321.2}}, {"label": "W27", "sub": "29 Jun", "kind": "week", "start": "2026-06-29", "end": "2026-07-05", "nweeks": 1, "antwerp": {"ai_sessions": 48.0, "sessions": 10486.0, "share": 0.46, "ai_revenue": 0.0, "revenue": 10173.0, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 68.8, "engagement": 49.8}, "eupen": {"ai_sessions": 9.0, "sessions": 2358.0, "share": 0.38, "ai_revenue": 0.0, "revenue": 2217.0, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 77.8, "engagement": 57.0}, "all": {"ai_sessions": 60.0, "sessions": 14114.0, "share": 0.43, "ai_revenue": 0.0, "revenue": 27417.5, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 68.3, "engagement": 51.9}, "money": {"ai_revenue_venues": 0.0, "ai_revenue": 0.0, "online_revenue": 27417.5, "share": 0.0, "ai_transactions": 0.0}, "b2b": {"ai_views": 1.0, "ai_sessions": 1.0, "ai_entrances": 1.0, "views": 293.0}}, {"label": "W28", "sub": "06 Jul", "kind": "week", "start": "2026-07-06", "end": "2026-07-12", "nweeks": 1, "antwerp": {"ai_sessions": 36.0, "sessions": 10222.0, "share": 0.35, "ai_revenue": 0.0, "revenue": 6972.0, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 63.9, "engagement": 50.2}, "eupen": {"ai_sessions": 9.0, "sessions": 2179.0, "share": 0.41, "ai_revenue": 0.0, "revenue": 2791.0, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 77.8, "engagement": 56.3}, "all": {"ai_sessions": 46.0, "sessions": 13739.0, "share": 0.33, "ai_revenue": 0.0, "revenue": 21836.0, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 65.2, "engagement": 52.3}, "money": {"ai_revenue_venues": 0.0, "ai_revenue": 0.0, "online_revenue": 21836.0, "share": 0.0, "ai_transactions": 0.0}, "b2b": {"ai_views": 0.0, "ai_sessions": 0.0, "ai_entrances": 0.0, "views": 431.0}}, {"label": "W29", "sub": "13 Jul", "kind": "week", "start": "2026-07-13", "end": "2026-07-19", "nweeks": 1, "antwerp": {"ai_sessions": 58.0, "sessions": 7926.0, "share": 0.73, "ai_revenue": 0.0, "revenue": 8717.0, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 79.3, "engagement": 57.8}, "eupen": {"ai_sessions": 12.0, "sessions": 2447.0, "share": 0.49, "ai_revenue": 0.0, "revenue": 4907.0, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 83.3, "engagement": 59.8}, "all": {"ai_sessions": 73.0, "sessions": 11884.0, "share": 0.61, "ai_revenue": 0.0, "revenue": 31293.0, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 76.7, "engagement": 58.4}, "money": {"ai_revenue_venues": 0.0, "ai_revenue": 0.0, "online_revenue": 31293.0, "share": 0.0, "ai_transactions": 0.0}, "b2b": {"ai_views": 4.0, "ai_sessions": 4.0, "ai_entrances": 0.0, "views": 684.0}}, {"label": "W30", "sub": "20 Jul", "kind": "week", "start": "2026-07-20", "end": "2026-07-26", "nweeks": 1, "antwerp": {"ai_sessions": 64.0, "sessions": 7742.0, "share": 0.83, "ai_revenue": 0.0, "revenue": 10853.9, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 75.0, "engagement": 66.0}, "eupen": {"ai_sessions": 30.0, "sessions": 3437.0, "share": 0.87, "ai_revenue": 0.0, "revenue": 4572.0, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 66.7, "engagement": 59.4}, "all": {"ai_sessions": 98.0, "sessions": 12974.0, "share": 0.76, "ai_revenue": 0.0, "revenue": 35899.9, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 70.4, "engagement": 63.3}, "money": {"ai_revenue_venues": 0.0, "ai_revenue": 0.0, "online_revenue": 35899.9, "share": 0.0, "ai_transactions": 0.0}, "b2b": {"ai_views": 5.0, "ai_sessions": 5.0, "ai_entrances": 0.0, "views": 681.0}}, {"label": "W31", "sub": "27 Jul", "kind": "week", "start": "2026-07-27", "end": "2026-08-02", "nweeks": 1, "antwerp": {"ai_sessions": 44.0, "sessions": 9513.0, "share": 0.46, "ai_revenue": 0.0, "revenue": 8193.0, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 79.5, "engagement": 61.7}, "eupen": {"ai_sessions": 18.0, "sessions": 3892.0, "share": 0.46, "ai_revenue": 0.0, "revenue": 5070.66, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 88.9, "engagement": 51.9}, "all": {"ai_sessions": 62.0, "sessions": 15226.0, "share": 0.41, "ai_revenue": 0.0, "revenue": 33821.66, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 82.3, "engagement": 58.6}, "money": {"ai_revenue_venues": 0.0, "ai_revenue": 0.0, "online_revenue": 33821.66, "share": 0.0, "ai_transactions": 0.0}, "b2b": {"ai_views": 6.0, "ai_sessions": 6.0, "ai_entrances": 0.0, "views": 801.0}}, {"label": "W32", "sub": "03 Aug", "kind": "week", "start": "2026-08-03", "end": "2026-08-09", "nweeks": 1, "antwerp": {"ai_sessions": 71.0, "sessions": 11043.0, "share": 0.64, "ai_revenue": 0.0, "revenue": 9216.0, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 81.7, "engagement": 60.2}, "eupen": {"ai_sessions": 18.0, "sessions": 3067.0, "share": 0.59, "ai_revenue": 0.0, "revenue": 5129.0, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 66.7, "engagement": 60.4}, "all": {"ai_sessions": 91.0, "sessions": 16484.0, "share": 0.55, "ai_revenue": 0.0, "revenue": 36532.3, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 76.9, "engagement": 59.0}, "money": {"ai_revenue_venues": 0.0, "ai_revenue": 0.0, "online_revenue": 36532.3, "share": 0.0, "ai_transactions": 0.0}, "b2b": {"ai_views": 9.0, "ai_sessions": 6.0, "ai_entrances": 0.0, "views": 1225.0}}, {"label": "W33", "sub": "10 Aug", "kind": "week", "start": "2026-08-10", "end": "2026-08-16", "nweeks": 1, "antwerp": {"ai_sessions": 126.0, "sessions": 11252.0, "share": 1.12, "ai_revenue": 0.0, "revenue": 11151.4, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 77.8, "engagement": 59.3}, "eupen": {"ai_sessions": 35.0, "sessions": 2380.0, "share": 1.47, "ai_revenue": 140.0, "revenue": 4701.0, "ai_transactions": 1.0, "ai_key_events": 1.0, "ai_engagement": 80.0, "engagement": 66.6}, "all": {"ai_sessions": 168.0, "sessions": 15800.0, "share": 1.06, "ai_revenue": 140.0, "revenue": 35619.2, "ai_transactions": 1.0, "ai_key_events": 1.0, "ai_engagement": 75.0, "engagement": 59.9}, "money": {"ai_revenue_venues": 140.0, "ai_revenue": 140.0, "online_revenue": 35619.2, "share": 0.39, "ai_transactions": 1.0}, "b2b": {"ai_views": 6.0, "ai_sessions": 8.0, "ai_entrances": 0.0, "views": 686.0}}, {"label": "W34", "sub": "17 Aug", "kind": "week", "start": "2026-08-17", "end": "2026-08-23", "nweeks": 1, "antwerp": {"ai_sessions": 184.0, "sessions": 10902.0, "share": 1.69, "ai_revenue": 452.0, "revenue": 14127.2, "ai_transactions": 2.0, "ai_key_events": 2.0, "ai_engagement": 79.9, "engagement": 64.7}, "eupen": {"ai_sessions": 41.0, "sessions": 2801.0, "share": 1.46, "ai_revenue": 40.0, "revenue": 4947.0, "ai_transactions": 1.0, "ai_key_events": 1.0, "ai_engagement": 80.5, "engagement": 70.5}, "all": {"ai_sessions": 237.0, "sessions": 16100.0, "share": 1.47, "ai_revenue": 570.0, "revenue": 45707.7, "ai_transactions": 4.0, "ai_key_events": 4.0, "ai_engagement": 76.8, "engagement": 65.1}, "money": {"ai_revenue_venues": 492.0, "ai_revenue": 570.0, "online_revenue": 45707.7, "share": 1.25, "ai_transactions": 4.0}, "b2b": {"ai_views": 7.0, "ai_sessions": 7.0, "ai_entrances": 0.0, "views": 441.0}}], "b2b_detail": [{"group": "Antwerp - Teambuilding hub", "venue": "antwerp", "page": "/antwerp/teambuilding/", "lang": "EN", "ai_views": 4, "ai_sessions": 5, "ai_entrances": 0, "views": 483, "share": 0.83, "last_week_ai_views": 1, "last_week_views": 149}, {"group": "Antwerp - Teambuilding hub", "venue": "antwerp", "page": "/antwerp/nl/teambuilding/", "lang": "NL", "ai_views": 6, "ai_sessions": 7, "ai_entrances": 0, "views": 411, "share": 1.46, "last_week_ai_views": 4, "last_week_views": 155}, {"group": "Antwerp - Bedrijfsevent / business events", "venue": "antwerp", "page": "/antwerp/business-events/", "lang": "EN", "ai_views": 15, "ai_sessions": 13, "ai_entrances": 0, "views": 1480, "share": 1.01, "last_week_ai_views": 2, "last_week_views": 36}, {"group": "Antwerp - Bedrijfsevent / business events", "venue": "antwerp", "page": "/antwerp/nl/bedrijfsevent/", "lang": "NL", "ai_views": 1, "ai_sessions": 1, "ai_entrances": 0, "views": 513, "share": 0.19, "last_week_ai_views": 0, "last_week_views": 30}, {"group": "Antwerp - Bedrijfsevent / business events", "venue": "antwerp", "page": "/antwerp/nl/business-events/", "lang": "NL legacy", "ai_views": 6, "ai_sessions": 6, "ai_entrances": 0, "views": 862, "share": 0.7, "last_week_ai_views": 0, "last_week_views": 0}, {"group": "Antwerp - Menu entry & legacy B2B pages", "venue": "antwerp", "page": "/antwerp/business/", "lang": "EN menu", "ai_views": 44, "ai_sessions": 29, "ai_entrances": 13, "views": 3046, "share": 1.44, "last_week_ai_views": 0, "last_week_views": 0}, {"group": "Antwerp - Menu entry & legacy B2B pages", "venue": "antwerp", "page": "/antwerp/nl/business/", "lang": "NL menu", "ai_views": 19, "ai_sessions": 15, "ai_entrances": 1, "views": 4518, "share": 0.42, "last_week_ai_views": 0, "last_week_views": 0}, {"group": "Antwerp - Menu entry & legacy B2B pages", "venue": "antwerp", "page": "/antwerp/business-event-aftermovie/", "lang": "EN", "ai_views": 0, "ai_sessions": 0, "ai_entrances": 0, "views": 367, "share": 0.0, "last_week_ai_views": 0, "last_week_views": 2}, {"group": "Antwerp - Menu entry & legacy B2B pages", "venue": "antwerp", "page": "/antwerp/business-event-discovery-call/", "lang": "EN", "ai_views": 2, "ai_sessions": 1, "ai_entrances": 0, "views": 354, "share": 0.56, "last_week_ai_views": 0, "last_week_views": 13}, {"group": "Antwerp - Menu entry & legacy B2B pages", "venue": "antwerp", "page": "/antwerp/nl/business-event-discovery-call/", "lang": "NL", "ai_views": 0, "ai_sessions": 0, "ai_entrances": 0, "views": 119, "share": 0.0, "last_week_ai_views": 0, "last_week_views": 3}, {"group": "Eupen - Business event & teambuilding", "venue": "eupen", "page": "/eupen/business-event-teambuilding/", "lang": "EN", "ai_views": 3, "ai_sessions": 3, "ai_entrances": 0, "views": 533, "share": 0.56, "last_week_ai_views": 0, "last_week_views": 21}, {"group": "Eupen - Business event & teambuilding", "venue": "eupen", "page": "/eupen/fr/evenement-entreprise-teambuilding/", "lang": "FR", "ai_views": 0, "ai_sessions": 0, "ai_entrances": 0, "views": 291, "share": 0.0, "last_week_ai_views": 0, "last_week_views": 15}, {"group": "Eupen - Business event & teambuilding", "venue": "eupen", "page": "/eupen/de/firmenveranstaltung/", "lang": "DE", "ai_views": 4, "ai_sessions": 3, "ai_entrances": 0, "views": 402, "share": 1.0, "last_week_ai_views": 0, "last_week_views": 17}], "b2b_groups": ["Antwerp - Teambuilding hub", "Antwerp - Bedrijfsevent / business events", "Antwerp - Menu entry & legacy B2B pages", "Eupen - Business event & teambuilding"], "sources": [{"source": "chatgpt.com", "sessions": 814}, {"source": "copilot.com", "sessions": 12}, {"source": "gemini.google.com", "sessions": 7}, {"source": "perplexity", "sessions": 1}, {"source": "claude.ai", "sessions": 1}], "last": {"label": "W34", "sub": "17 Aug", "kind": "week", "start": "2026-08-17", "end": "2026-08-23", "nweeks": 1, "antwerp": {"ai_sessions": 184.0, "sessions": 10902.0, "share": 1.69, "ai_revenue": 452.0, "revenue": 14127.2, "ai_transactions": 2.0, "ai_key_events": 2.0, "ai_engagement": 79.9, "engagement": 64.7}, "eupen": {"ai_sessions": 41.0, "sessions": 2801.0, "share": 1.46, "ai_revenue": 40.0, "revenue": 4947.0, "ai_transactions": 1.0, "ai_key_events": 1.0, "ai_engagement": 80.5, "engagement": 70.5}, "all": {"ai_sessions": 237.0, "sessions": 16100.0, "share": 1.47, "ai_revenue": 570.0, "revenue": 45707.7, "ai_transactions": 4.0, "ai_key_events": 4.0, "ai_engagement": 76.8, "engagement": 65.1}, "money": {"ai_revenue_venues": 492.0, "ai_revenue": 570.0, "online_revenue": 45707.7, "share": 1.25, "ai_transactions": 4.0}, "b2b": {"ai_views": 7.0, "ai_sessions": 7.0, "ai_entrances": 0.0, "views": 441.0}}, "prev": {"label": "W33", "sub": "10 Aug", "kind": "week", "start": "2026-08-10", "end": "2026-08-16", "nweeks": 1, "antwerp": {"ai_sessions": 126.0, "sessions": 11252.0, "share": 1.12, "ai_revenue": 0.0, "revenue": 11151.4, "ai_transactions": 0.0, "ai_key_events": 0.0, "ai_engagement": 77.8, "engagement": 59.3}, "eupen": {"ai_sessions": 35.0, "sessions": 2380.0, "share": 1.47, "ai_revenue": 140.0, "revenue": 4701.0, "ai_transactions": 1.0, "ai_key_events": 1.0, "ai_engagement": 80.0, "engagement": 66.6}, "all": {"ai_sessions": 168.0, "sessions": 15800.0, "share": 1.06, "ai_revenue": 140.0, "revenue": 35619.2, "ai_transactions": 1.0, "ai_key_events": 1.0, "ai_engagement": 75.0, "engagement": 59.9}, "money": {"ai_revenue_venues": 140.0, "ai_revenue": 140.0, "online_revenue": 35619.2, "share": 0.39, "ai_transactions": 1.0}, "b2b": {"ai_views": 6.0, "ai_sessions": 8.0, "ai_entrances": 0.0, "views": 686.0}}, "baseline": {"antwerp": 24.3, "eupen": 6.3, "all": 32.1}};
+
+/* ---------- formatting ---------- */
+const nf = new Intl.NumberFormat('en-GB', {maximumFractionDigits:0});
+const nf1 = new Intl.NumberFormat('en-GB', {maximumFractionDigits:1});
+const eur = v => '€' + nf.format(Math.round(v));
+const pct = v => nf1.format(v).replace(/,/g,'') + '%';
+const pct2 = v => (v >= 1 ? v.toFixed(2) : v.toFixed(2)) + '%';
+const cats = R.buckets.map(b => ({label:b.label, sub:b.kind === 'avg' ? 'avg' : b.sub, kind:b.kind, range:b.start + ' → ' + b.end, nweeks:b.nweeks}));
+const splitIndex = R.buckets.findIndex(b => b.kind === 'week');
+
+/* ---------- chart engine ---------- */
+function niceMax(v){
+  if (v <= 0) return 1;
+  const p = Math.pow(10, Math.floor(Math.log10(v)));
+  const s = [1,1.5,2,2.5,3,4,5,6,8,10];
+  for (const k of s) if (v <= k*p) return k*p;
+  return 10*p;
+}
+function chart(hostId, opt){
+  const host = document.getElementById(hostId);
+  const W = 1000, H = opt.h || 320;
+  const m = {t:18, r:opt.r || 78, b:52, l:opt.l || 60};
+  const iw = W - m.l - m.r, ih = H - m.t - m.b;
+  const n = cats.length;
+  const all = opt.series.flatMap(s => s.values);
+  const top = niceMax(Math.max(...all, opt.floor || 0) * 1.08);
+  const x = i => m.l + (i + 0.5) * iw / n;
+  const y = v => m.t + ih - (v / top) * ih;
+  const svg = [];
+  svg.push(`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${opt.title||''}">`);
+  // averaged zone
+  if (splitIndex > 0){
+    const xs = m.l, xe = m.l + splitIndex * iw / n;
+    svg.push(`<rect x="${xs}" y="${m.t}" width="${xe-xs}" height="${ih}" fill="#F6F6F7"/>`);
+    svg.push(`<text x="${xs+8}" y="${m.t+13}" font-size="11" fill="#8C9196" font-family="EFBody,sans-serif">monthly averages</text>`);
+    svg.push(`<text x="${xe+8}" y="${m.t+13}" font-size="11" fill="#8C9196" font-family="EFBody,sans-serif">week by week</text>`);
+    svg.push(`<line x1="${xe}" y1="${m.t}" x2="${xe}" y2="${m.t+ih}" stroke="#C9CCD0" stroke-width="1" stroke-dasharray="4 4"/>`);
+  }
+  // y grid
+  const steps = 4;
+  for (let k = 0; k <= steps; k++){
+    const v = top * k / steps, yy = y(v);
+    svg.push(`<line x1="${m.l}" y1="${yy}" x2="${m.l+iw}" y2="${yy}" stroke="#E2E3E6" stroke-width="1"/>`);
+    svg.push(`<text x="${m.l-10}" y="${yy+4}" text-anchor="end" font-size="11.5" fill="#6B7075" font-family="EFBody,sans-serif">${opt.fmtAxis(v)}</text>`);
+  }
+  // marks
+  if (opt.type === 'bar'){
+    const bw = Math.min(34, (iw/n) * (opt.series.length > 1 ? 0.34 : 0.56));
+    opt.series.forEach((s, si) => {
+      s.values.forEach((v, i) => {
+        const off = opt.series.length > 1 ? (si - (opt.series.length-1)/2) * (bw+2) : 0;
+        const hgt = Math.max(v > 0 ? 2 : 0, m.t + ih - y(v));
+        if (hgt > 0) svg.push(`<rect x="${x(i)+off-bw/2}" y="${m.t+ih-hgt}" width="${bw}" height="${hgt}" rx="3" fill="${s.color}"/>`);
+      });
+    });
+  } else {
+    opt.series.forEach(s => {
+      const d = s.values.map((v,i) => `${i?'L':'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+      svg.push(`<path d="${d}" fill="none" stroke="${s.color}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>`);
+      s.values.forEach((v,i) => svg.push(`<circle cx="${x(i)}" cy="${y(v)}" r="4" fill="${s.color}" stroke="#fff" stroke-width="2"/>`));
+      const lastV = s.values[s.values.length-1];
+      svg.push(`<text x="${x(n-1)+12}" y="${y(lastV)+4}" font-size="12.5" font-weight="700" fill="${s.color}" font-family="EFHead,sans-serif">${opt.fmtLabel(lastV)}</text>`);
+    });
+  }
+  // x labels
+  cats.forEach((c,i) => {
+    svg.push(`<text x="${x(i)}" y="${m.t+ih+20}" text-anchor="middle" font-size="11.5" fill="${c.kind==='week'?'#3A3F44':'#6B7075'}" font-family="EFBody,sans-serif" font-weight="${c.kind==='week'?600:400}">${c.label}</text>`);
+    svg.push(`<text x="${x(i)}" y="${m.t+ih+35}" text-anchor="middle" font-size="10.5" fill="#8C9196" font-family="EFBody,sans-serif">${c.sub}</text>`);
+  });
+  // hover targets
+  cats.forEach((c,i) => {
+    svg.push(`<rect class="hit" data-i="${i}" x="${m.l + i*iw/n}" y="${m.t}" width="${iw/n}" height="${ih}" fill="transparent"/>`);
+  });
+  svg.push('</svg>');
+  host.innerHTML = svg.join('') + '<div class="tip"></div>';
+
+  const tip = host.querySelector('.tip');
+  const svgEl = host.querySelector('svg');
+  host.querySelectorAll('.hit').forEach(r => {
+    r.addEventListener('mouseenter', e => {
+      const i = +r.dataset.i;
+      tip.innerHTML = opt.tooltip(i);
+      const box = host.getBoundingClientRect(), sb = svgEl.getBoundingClientRect();
+      const scale = sb.width / W;
+      tip.style.left = (x(i) * scale) + 'px';
+      tip.style.top = (m.t * scale + 8) + 'px';
+      tip.style.opacity = 1;
+    });
+    r.addEventListener('mouseleave', () => { tip.style.opacity = 0; });
+  });
+}
+function tipHead(i){
+  const c = cats[i], b = R.buckets[i];
+  const kind = b.kind === 'avg' ? `weekly average of ${b.nweeks} weeks` : 'week ' + b.sub;
+  return `<b>${b.label}</b> · ${kind}<br><span style="color:#B9BDC1">${b.start} → ${b.end}</span><br>`;
+}
+function tipRow(color, name, value){
+  return `<div class="row"><i style="background:${color}"></i>${name}: <b style="font-family:inherit">${value}</b></div>`;
+}
+
+/* ---------- header + KPIs ---------- */
+const lastEnd = new Date(R.buckets[R.buckets.length-1].end + 'T12:00:00')
+  .toLocaleDateString('en-GB', {weekday:'long', day:'numeric', month:'short', year:'numeric'});
+document.getElementById('stamp').innerHTML =
+  `Report generated <b>${R.generated}</b><br>Data through ${lastEnd} · GA4 property 355017554`;
+document.getElementById('weeklead').textContent =
+  `Week ${R.week_number}, ${R.week_label}`;
+document.getElementById('cap1').textContent =
+  `${R.averaged_months[0]} to ${R.averaged_months[R.averaged_months.length-1]} are shown as one weekly average per month; ${R.detailed_months.join(' and ')} are shown week by week. The week in progress is never shown.`;
+
+const L = R.last, P = R.prev, B = R.baseline;
+function delta(cur, prev){
+  if (!prev) return '';
+  const d = (cur - prev) / prev * 100;
+  const arrow = d >= 0 ? '▲' : '▼';
+  return `${arrow} ${nf1.format(Math.abs(d))}% vs previous week`;
+}
+function times(cur, base){
+  if (!base) return '';
+  return `<b>×${nf1.format(cur/base)}</b> the ${R.averaged_months[0].split(' ')[0]}–${R.averaged_months[5].split(' ')[0]} weekly average`;
+}
+document.getElementById('kpis').innerHTML = [
+  {cls:'ai', label:'AI sessions, both venues', value:nf.format(L.all.ai_sessions),
+   sub:pct2(L.all.share) + ' of all sessions', d:delta(L.all.ai_sessions, P.all.ai_sessions), t:times(L.all.ai_sessions, B.all)},
+  {cls:'antwerp', label:'Antwerp', value:nf.format(L.antwerp.ai_sessions),
+   sub:pct2(L.antwerp.share) + ' of Antwerp sessions', d:delta(L.antwerp.ai_sessions, P.antwerp.ai_sessions), t:times(L.antwerp.ai_sessions, B.antwerp)},
+  {cls:'eupen', label:'Eupen', value:nf.format(L.eupen.ai_sessions),
+   sub:pct2(L.eupen.share) + ' of Eupen sessions', d:delta(L.eupen.ai_sessions, P.eupen.ai_sessions), t:times(L.eupen.ai_sessions, B.eupen)},
+  {cls:'ai', label:'AI online revenue', value:eur(L.money.ai_revenue),
+   sub:pct2(L.money.share) + ' of all online revenue', d:`${nf.format(L.money.ai_transactions)} transaction(s)`, t:`out of ${eur(L.money.online_revenue)} booked online`},
+  {cls:'ai', label:'B2B page views from AI', value:nf.format(L.b2b.ai_views),
+   sub:`${nf.format(L.b2b.ai_entrances)} landed straight on a B2B page`, d:`out of ${nf.format(L.b2b.views)} B2B views`, t:''},
+].map(k => `<div class="kpi ${k.cls}"><div class="label">${k.label}</div><div class="kpi-value">${k.value}</div>
+  <div class="kpi-sub">${k.sub}</div><div class="delta">${k.d}${k.t ? '<br>' + k.t : ''}</div></div>`).join('');
+
+const topSrc = R.sources.slice(0,3).map(s => `${s.source} ${nf.format(s.sessions)}`).join(', ');
+document.getElementById('kpinote').innerHTML =
+  `Assistants seen over ${R.detailed_months.join(' and ')}: ${topSrc}${R.sources.length>3 ? ', and ' + (R.sources.length-3) + ' more' : ''}.`;
+
+/* ---------- charts ---------- */
+chart('c_sessions', {
+  type:'line', title:'AI sessions per week',
+  series:[{name:'Antwerp', color:'#E30513', values:R.buckets.map(b=>b.antwerp.ai_sessions)},
+          {name:'Eupen', color:'#00897B', values:R.buckets.map(b=>b.eupen.ai_sessions)}],
+  fmtAxis:v=>nf.format(v), fmtLabel:v=>nf.format(v),
+  tooltip:i=>{const b=R.buckets[i];return tipHead(i)
+    + tipRow('#E30513','Antwerp', nf1.format(b.antwerp.ai_sessions) + ' AI sessions (' + pct2(b.antwerp.share) + ')')
+    + tipRow('#00897B','Eupen', nf1.format(b.eupen.ai_sessions) + ' AI sessions (' + pct2(b.eupen.share) + ')');}
+});
+chart('c_share', {
+  type:'line', title:'AI share of sessions',
+  series:[{name:'Antwerp', color:'#E30513', values:R.buckets.map(b=>b.antwerp.share)},
+          {name:'Eupen', color:'#00897B', values:R.buckets.map(b=>b.eupen.share)}],
+  fmtAxis:v=>nf1.format(v)+'%', fmtLabel:v=>pct2(v),
+  tooltip:i=>{const b=R.buckets[i];return tipHead(i)
+    + tipRow('#E30513','Antwerp', pct2(b.antwerp.share) + ' of ' + nf.format(b.antwerp.sessions) + ' sessions')
+    + tipRow('#00897B','Eupen', pct2(b.eupen.share) + ' of ' + nf.format(b.eupen.sessions) + ' sessions');}
+});
+chart('c_rev', {
+  type:'bar', h:300, r:26, title:'AI revenue by venue',
+  series:[{name:'Antwerp', color:'#E30513', values:R.buckets.map(b=>b.antwerp.ai_revenue)},
+          {name:'Eupen', color:'#00897B', values:R.buckets.map(b=>b.eupen.ai_revenue)}],
+  fmtAxis:v=>eur(v), fmtLabel:v=>eur(v),
+  tooltip:i=>{const b=R.buckets[i];return tipHead(i)
+    + tipRow('#E30513','Antwerp', eur(b.antwerp.ai_revenue))
+    + tipRow('#00897B','Eupen', eur(b.eupen.ai_revenue))
+    + tipRow('#3D3AC7','AI total, site-wide', eur(b.money.ai_revenue) + ' · ' + nf1.format(b.money.ai_transactions) + ' tx')
+    + tipRow('#C9CCD0','All online revenue', eur(b.money.online_revenue));}
+});
+chart('c_revshare', {
+  type:'bar', h:300, r:26, title:'AI share of online revenue',
+  series:[{name:'share', color:'#7C79EE', values:R.buckets.map(b=>b.money.share)}],
+  fmtAxis:v=>nf1.format(v)+'%', fmtLabel:v=>pct2(v),
+  tooltip:i=>{const b=R.buckets[i];return tipHead(i)
+    + tipRow('#7C79EE','Share of online revenue', pct2(b.money.share))
+    + tipRow('#C9CCD0','All online revenue', eur(b.money.online_revenue));}
+});
+chart('c_b2b', {
+  type:'bar', h:280, title:'B2B page views from AI sessions',
+  series:[{name:'B2B views', color:'#3D3AC7', values:R.buckets.map(b=>b.b2b.ai_views)}],
+  fmtAxis:v=>nf.format(v), fmtLabel:v=>nf.format(v),
+  tooltip:i=>{const b=R.buckets[i];return tipHead(i)
+    + tipRow('#3D3AC7','B2B views in AI sessions', nf1.format(b.b2b.ai_views))
+    + tipRow('#7C79EE','Landed on a B2B page', nf1.format(b.b2b.ai_entrances))
+    + tipRow('#C9CCD0','All B2B views', nf1.format(b.b2b.views));}
+});
+
+/* ---------- tables ---------- */
+const mainHead = ['Period','Antwerp AI sessions','Antwerp share','Eupen AI sessions','Eupen share','Antwerp AI revenue','Eupen AI revenue','AI revenue, site-wide','All online revenue','AI share of revenue','AI transactions','B2B views from AI'];
+document.getElementById('t_main').innerHTML =
+  '<table><thead><tr>' + mainHead.map((h,i) => `<th class="${i?'num':'txt'}">${h}</th>`).join('') + '</tr></thead><tbody>' +
+  R.buckets.map((b,i) => {
+    const cls = i === R.buckets.length-1 ? 'last' : (b.kind === 'avg' ? 'avg' : '');
+    const period = b.kind === 'avg'
+      ? `${b.label} <span class="tag">${b.nweeks}-week avg</span>`
+      : `${b.label} <span class="tag">${b.sub}</span>`;
+    return `<tr class="${cls}"><td class="txt">${period}</td>
+      <td class="num">${nf1.format(b.antwerp.ai_sessions)}</td><td class="num">${pct2(b.antwerp.share)}</td>
+      <td class="num">${nf1.format(b.eupen.ai_sessions)}</td><td class="num">${pct2(b.eupen.share)}</td>
+      <td class="num">${eur(b.antwerp.ai_revenue)}</td><td class="num">${eur(b.eupen.ai_revenue)}</td>
+      <td class="num">${eur(b.money.ai_revenue)}</td><td class="num">${eur(b.money.online_revenue)}</td>
+      <td class="num">${pct2(b.money.share)}</td><td class="num">${nf1.format(b.money.ai_transactions)}</td>
+      <td class="num">${nf1.format(b.b2b.ai_views)}</td></tr>`;
+  }).join('') + '</tbody></table>';
+
+const b2bHead = ['Page','','AI views','AI sessions','AI landings','All views','AI share','AI views last week'];
+let rows = '', currentGroup = '';
+R.b2b_detail.forEach(p => {
+  if (p.group !== currentGroup){
+    currentGroup = p.group;
+    rows += `<tr class="group"><td class="txt" colspan="8">${p.group}</td></tr>`;
+  }
+  rows += `<tr><td class="txt">${p.page}</td><td class="txt dim">${p.lang}</td>
+    <td class="num">${nf.format(p.ai_views)}</td><td class="num">${nf.format(p.ai_sessions)}</td>
+    <td class="num">${nf.format(p.ai_entrances)}</td><td class="num">${nf.format(p.views)}</td>
+    <td class="num">${pct2(p.share)}</td><td class="num">${nf.format(p.last_week_ai_views)}</td></tr>`;
+});
+document.getElementById('t_b2b').innerHTML =
+  '<table><thead><tr>' + b2bHead.map((h,i) => `<th class="${i<2?'txt':'num'}">${h}</th>`).join('') + '</tr></thead><tbody>' + rows + '</tbody></table>';
+document.getElementById('b2bnote').innerHTML =
+  `Totals cover the whole window shown above (${R.buckets[0].start} to ${R.buckets[R.buckets.length-1].end}). "AI landings" counts sessions that arrived from an assistant straight onto that page, which is the harder and more valuable signal.`;
+
+const moneyLead = R.buckets.filter(b => b.money.online_revenue > 0 && b.money.ai_revenue > 0);
+document.getElementById('moneynote').innerHTML =
+  `Revenue is read from GA4 purchase events on both hosts, the website and the Apex booking engine, and is credited to the session that started at the assistant. `
+  + `Two known reasons this <b>under-reports</b> AI money: an assistant that sends a visitor without a referrer lands in Direct, which carries most of the site's revenue; and a booking finished in a later visit is credited to that later source, not to the AI session.`;
+
+document.getElementById('method').innerHTML = `<h3>How each number is produced</h3><ul>
+<li><b>What counts as AI.</b> A session whose GA4 channel is "AI Assistant", or whose source matches chatgpt, openai, gemini, copilot, perplexity, claude.ai, mistral, deepseek, grok, meta.ai, kagi, you.com or phind. Both rules are needed: the native channel group only exists from around June 2026, so earlier AI sessions sit in "Unassigned" and are recovered by the source rule.</li>
+<li><b>Venue split.</b> A session belongs to Antwerp or Eupen by its landing page, /antwerp/ or /eupen/. Sessions that land straight on the booking engine have no venue and appear only in the site-wide figures.</li>
+<li><b>Weeks.</b> ISO weeks, Monday to Sunday. A week belongs to the month of its Thursday. Only finished weeks are shown, so the report never mixes a partial week into a trend.</li>
+<li><b>The rolling window.</b> The current month and the one before it are shown week by week; the six months before that become one weekly average each; older months drop off. Every figure on this page, averages included, is expressed per week so the scale never changes.</li>
+<li><b>Revenue before May 2026.</b> Venue-level revenue is empty in January to April: until the cross-domain tracking changed in May, bookings were recorded on sessions that had no /antwerp/ or /eupen/ landing page. Site-wide online revenue is available for the whole period.</li>
+<li><b>Traffic share before May 2026.</b> Site-wide session volume roughly doubled in week 20 for a measurement reason, not a business one. Absolute AI session counts stay comparable across the whole window because they are based on the referrer; the percentages are only strictly comparable from May onwards.</li>
+<li><b>Antwerp history.</b> The /antwerp/ pages only exist in this GA4 property from 8 December 2025, so there is no earlier Antwerp baseline.</li>
+</ul>`;
+
+document.getElementById('foot').innerHTML =
+  `Experience Factory · AI Traffic Watch · rebuilt every morning at 09:00 Brussels time · as-of ${R.asof_label} · source GA4 property 355017554`;
+</script>
+</body>
+</html>

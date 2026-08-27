@@ -1,0 +1,49 @@
+name: Daily AI traffic report
+
+on:
+  schedule:
+    # 07:00 UTC = 09:00 Brussels while CEST is in force.
+    # After the DST change on 26 October, move this to "0 8 * * *".
+    - cron: "0 7 * * *"
+  workflow_dispatch:
+    inputs:
+      asof:
+        description: "Pretend the run happens on this date (YYYY-MM-DD)"
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Pull GA4 data
+        env:
+          GA4_SA_JSON: ${{ secrets.GA4_SA_JSON }}
+          GA4_PROPERTY_ID: ${{ vars.GA4_PROPERTY_ID || '355017554' }}
+        run: python scripts/pull.py ${{ github.event.inputs.asof && format('--asof {0}', github.event.inputs.asof) || '' }}
+
+      - name: Build the report
+        run: python scripts/build_report.py ${{ github.event.inputs.asof && format('--asof {0}', github.event.inputs.asof) || '' }}
+
+      - name: Commit data and report
+        run: |
+          git config user.name "ef-ai-traffic-bot"
+          git config user.email "actions@github.com"
+          git add data docs
+          if git diff --staged --quiet; then
+            echo "nothing changed"
+          else
+            git commit -m "AI traffic report $(date -u +%Y-%m-%d)"
+            git push
+          fi
