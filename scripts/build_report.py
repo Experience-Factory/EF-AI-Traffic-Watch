@@ -51,6 +51,7 @@ B2B_GROUPS = [
     ]),
 ]
 B2B_PAGES = [p for _, _, pages in B2B_GROUPS for p, _ in pages]
+B2B_PAGE_VENUE = {p: venue for _, venue, pages in B2B_GROUPS for p, _ in pages}
 
 
 def safe_div(a, b):
@@ -94,6 +95,7 @@ def build_payload(asof):
                 "ai_key_events": round(d["ai_keyEvents"], 2),
                 "ai_engagement": round(safe_div(d["ai_engagedSessions"], d["ai_sessions"]) * 100, 1),
                 "engagement": round(safe_div(d["all_engagedSessions"], d["all_sessions"]) * 100, 1),
+                "revenue_share": round(safe_div(d["ai_purchaseRevenue"], d["all_purchaseRevenue"]) * 100, 2),
             }
         # AI money share is measured against ALL online revenue, both hosts
         entry["money"] = {
@@ -103,14 +105,18 @@ def build_payload(asof):
             "share": round(safe_div(entry["all"]["ai_revenue"], entry["all"]["revenue"]) * 100, 2),
             "ai_transactions": entry["all"]["ai_transactions"],
         }
-        b2b = {"ai_views": 0.0, "ai_sessions": 0.0, "ai_entrances": 0.0, "views": 0.0}
-        for page in B2B_PAGES:
-            d = b["data"][(page,)]
-            b2b["ai_views"] += d["ai_screenPageViews"]
-            b2b["ai_sessions"] += d["ai_sessions"]
-            b2b["ai_entrances"] += d["ai_entrances"]
-            b2b["views"] += d["all_screenPageViews"]
-        entry["b2b"] = {k: round(v, 1) for k, v in b2b.items()}
+        # B2B is never merged: one block per venue
+        for venue in ("antwerp", "eupen"):
+            b2b = {"ai_views": 0.0, "ai_sessions": 0.0, "ai_entrances": 0.0, "views": 0.0}
+            for page in B2B_PAGES:
+                if B2B_PAGE_VENUE[page] != venue:
+                    continue
+                d = b["data"][(page,)]
+                b2b["ai_views"] += d["ai_screenPageViews"]
+                b2b["ai_sessions"] += d["ai_sessions"]
+                b2b["ai_entrances"] += d["ai_entrances"]
+                b2b["views"] += d["all_screenPageViews"]
+            entry[venue]["b2b"] = {k: round(v, 1) for k, v in b2b.items()}
         buckets.append(entry)
 
     # per-page B2B detail: window total (not weekly average) + last complete week

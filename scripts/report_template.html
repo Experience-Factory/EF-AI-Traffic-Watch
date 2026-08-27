@@ -42,7 +42,9 @@ h2 + .lead{font-size:22px;font-weight:600;font-family:var(--head);margin:0 0 18p
 .note{color:var(--muted);font-size:13.5px;margin:10px 0 0;max-width:900px}
 
 /* ---------- KPI ---------- */
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:14px;margin-top:6px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:6px}
+@media(max-width:820px){.kpis{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.kpis{grid-template-columns:1fr}}
 .kpi{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:6px;padding:16px 16px 14px}
 .kpi.antwerp{border-top-color:var(--red)} .kpi.eupen{border-top-color:var(--teal)} .kpi.ai{border-top-color:var(--violet)}
 .kpi .label{font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--muted);font-weight:700}
@@ -139,13 +141,14 @@ footer a{color:#D6D8DA}
     <div class="lead">Online revenue booked in a session that started at an AI assistant</div>
     <div class="card">
       <h3>AI-attributed online revenue, by venue</h3>
-      <p class="cap">GA4 purchase revenue booked in an AI session, per week. A session that lands straight on the booking engine has no venue, so the two bars can add up to slightly less than the site total shown in the tooltip.</p>
+      <p class="cap">GA4 purchase revenue booked in an AI session, per week, for each venue separately.</p>
       <div class="legend"><span><i style="background:var(--red)"></i>Antwerp</span><span><i style="background:var(--teal)"></i>Eupen</span></div>
       <div class="chart" id="c_rev"></div>
     </div>
     <div class="card">
-      <h3>Share of all online revenue</h3>
-      <p class="cap">AI revenue divided by total online revenue, both hosts, per week.</p>
+      <h3>AI share of the venue's online revenue</h3>
+      <p class="cap">AI revenue divided by that venue's own online revenue, per week.</p>
+      <div class="legend"><span><i style="background:var(--red)"></i>Antwerp</span><span><i style="background:var(--teal)"></i>Eupen</span></div>
       <div class="chart" id="c_revshare"></div>
     </div>
     <p class="note" id="moneynote"></p>
@@ -156,7 +159,8 @@ footer a{color:#D6D8DA}
     <div class="lead">Teambuilding and bedrijfsevent pages, Antwerp and Eupen</div>
     <div class="card">
       <h3>Views of the B2B pages inside an AI session</h3>
-      <p class="cap">Page views counted whenever the visitor arrived from an AI assistant, whatever page they landed on.</p>
+      <p class="cap">Page views counted whenever the visitor arrived from an AI assistant, whatever page they landed on. Antwerp and Eupen are counted separately.</p>
+      <div class="legend"><span><i style="background:var(--red)"></i>Antwerp</span><span><i style="background:var(--teal)"></i>Eupen</span></div>
       <div class="chart" id="c_b2b"></div>
     </div>
     <h3 class="tabtitle"><i style="background:var(--red)"></i>Antwerp</h3>
@@ -169,7 +173,11 @@ footer a{color:#D6D8DA}
   <section>
     <h2>Full data</h2>
     <div class="lead">Every point behind the charts</div>
-    <div class="tablewrap" id="t_main"></div>
+    <h3 class="tabtitle"><i style="background:var(--red)"></i>Antwerp</h3>
+    <div class="tablewrap" id="t_main_antwerp"></div>
+    <h3 class="tabtitle"><i style="background:var(--teal)"></i>Eupen</h3>
+    <div class="tablewrap" id="t_main_eupen"></div>
+    <p class="note" id="mainnote"></p>
   </section>
 
   <section>
@@ -304,18 +312,22 @@ function times(cur, base){
   if (!base) return '';
   return `<b>×${nf1.format(cur/base)}</b> the ${R.averaged_months[0].split(' ')[0]}–${R.averaged_months[5].split(' ')[0]} weekly average`;
 }
-document.getElementById('kpis').innerHTML = [
-  {cls:'ai', label:'AI sessions, both venues', value:nf.format(L.all.ai_sessions),
-   sub:pct2(L.all.share) + ' of all sessions', d:delta(L.all.ai_sessions, P.all.ai_sessions), t:times(L.all.ai_sessions, B.all)},
-  {cls:'antwerp', label:'Antwerp', value:nf.format(L.antwerp.ai_sessions),
-   sub:pct2(L.antwerp.share) + ' of Antwerp sessions', d:delta(L.antwerp.ai_sessions, P.antwerp.ai_sessions), t:times(L.antwerp.ai_sessions, B.antwerp)},
-  {cls:'eupen', label:'Eupen', value:nf.format(L.eupen.ai_sessions),
-   sub:pct2(L.eupen.share) + ' of Eupen sessions', d:delta(L.eupen.ai_sessions, P.eupen.ai_sessions), t:times(L.eupen.ai_sessions, B.eupen)},
-  {cls:'ai', label:'AI online revenue', value:eur(L.money.ai_revenue),
-   sub:pct2(L.money.share) + ' of all online revenue', d:`${nf.format(L.money.ai_transactions)} transaction(s)`, t:`out of ${eur(L.money.online_revenue)} booked online`},
-  {cls:'ai', label:'B2B page views from AI', value:nf.format(L.b2b.ai_views),
-   sub:`${nf.format(L.b2b.ai_entrances)} landed straight on a B2B page`, d:`out of ${nf.format(L.b2b.views)} B2B views`, t:''},
-].map(k => `<div class="kpi ${k.cls}"><div class="label">${k.label}</div><div class="kpi-value">${k.value}</div>
+document.getElementById('kpis').innerHTML = ['antwerp','eupen'].flatMap(v => {
+  const name = v === 'antwerp' ? 'Antwerp' : 'Eupen';
+  const cls = v === 'antwerp' ? 'antwerp' : 'eupen';
+  return [
+    {cls, label:`${name} AI sessions`, value:nf.format(L[v].ai_sessions),
+     sub:pct2(L[v].share) + ` of ${name} sessions`,
+     d:delta(L[v].ai_sessions, P[v].ai_sessions), t:times(L[v].ai_sessions, B[v])},
+    {cls, label:`${name} AI revenue`, value:eur(L[v].ai_revenue),
+     sub:pct2(L[v].revenue_share) + ` of ${name} online revenue`,
+     d:`${nf.format(L[v].ai_transactions)} transaction(s)`,
+     t:`out of ${eur(L[v].revenue)} booked on ${name}`},
+    {cls, label:`${name} B2B page views from AI`, value:nf.format(L[v].b2b.ai_views),
+     sub:`${nf.format(L[v].b2b.ai_entrances)} landed straight on a B2B page`,
+     d:`out of ${nf.format(L[v].b2b.views)} B2B page views`, t:''},
+  ];
+}).map(k => `<div class="kpi ${k.cls}"><div class="label">${k.label}</div><div class="kpi-value">${k.value}</div>
   <div class="kpi-sub">${k.sub}</div><div class="delta">${k.d}${k.t ? '<br>' + k.t : ''}</div></div>`).join('');
 
 const topSrc = R.sources.slice(0,3).map(s => `${s.source} ${nf.format(s.sessions)}`).join(', ');
@@ -349,45 +361,47 @@ chart('c_rev', {
   tooltip:i=>{const b=R.buckets[i];return tipHead(i)
     + tipRow('#E30513','Antwerp', eur(b.antwerp.ai_revenue))
     + tipRow('#00897B','Eupen', eur(b.eupen.ai_revenue))
-    + tipRow('#3D3AC7','AI total, site-wide', eur(b.money.ai_revenue) + ' · ' + nf1.format(b.money.ai_transactions) + ' tx')
-    + tipRow('#C9CCD0','All online revenue', eur(b.money.online_revenue));}
+    + tipRow('#C9CCD0','Antwerp online revenue', eur(b.antwerp.revenue))
+    + tipRow('#C9CCD0','Eupen online revenue', eur(b.eupen.revenue));}
 });
 chart('c_revshare', {
-  type:'bar', h:300, r:26, title:'AI share of online revenue',
-  series:[{name:'share', color:'#7C79EE', values:R.buckets.map(b=>b.money.share)}],
+  type:'bar', h:300, r:26, title:'AI share of the venue online revenue',
+  series:[{name:'Antwerp', color:'#E30513', values:R.buckets.map(b=>b.antwerp.revenue_share)},
+          {name:'Eupen', color:'#00897B', values:R.buckets.map(b=>b.eupen.revenue_share)}],
   fmtAxis:v=>nf1.format(v)+'%', fmtLabel:v=>pct2(v),
   tooltip:i=>{const b=R.buckets[i];return tipHead(i)
-    + tipRow('#7C79EE','Share of online revenue', pct2(b.money.share))
-    + tipRow('#C9CCD0','All online revenue', eur(b.money.online_revenue));}
+    + tipRow('#E30513','Antwerp', pct2(b.antwerp.revenue_share) + ' of ' + eur(b.antwerp.revenue))
+    + tipRow('#00897B','Eupen', pct2(b.eupen.revenue_share) + ' of ' + eur(b.eupen.revenue));}
 });
 chart('c_b2b', {
-  type:'bar', h:280, title:'B2B page views from AI sessions',
-  series:[{name:'B2B views', color:'#3D3AC7', values:R.buckets.map(b=>b.b2b.ai_views)}],
+  type:'bar', h:300, title:'B2B page views from AI sessions',
+  series:[{name:'Antwerp', color:'#E30513', values:R.buckets.map(b=>b.antwerp.b2b.ai_views)},
+          {name:'Eupen', color:'#00897B', values:R.buckets.map(b=>b.eupen.b2b.ai_views)}],
   fmtAxis:v=>nf.format(v), fmtLabel:v=>nf.format(v),
   tooltip:i=>{const b=R.buckets[i];return tipHead(i)
-    + tipRow('#3D3AC7','B2B views in AI sessions', nf1.format(b.b2b.ai_views))
-    + tipRow('#7C79EE','Landed on a B2B page', nf1.format(b.b2b.ai_entrances))
-    + tipRow('#C9CCD0','All B2B views', nf1.format(b.b2b.views));}
+    + tipRow('#E30513','Antwerp', nf1.format(b.antwerp.b2b.ai_views) + ' views · ' + nf1.format(b.antwerp.b2b.ai_entrances) + ' landings')
+    + tipRow('#00897B','Eupen', nf1.format(b.eupen.b2b.ai_views) + ' views · ' + nf1.format(b.eupen.b2b.ai_entrances) + ' landings');}
 });
 
 /* ---------- tables ---------- */
-const mainHead = ['Period','Antwerp AI sessions','Antwerp share','Eupen AI sessions','Eupen share','Antwerp AI revenue','Antwerp online revenue','Eupen AI revenue','Eupen online revenue','AI revenue, site-wide','All online revenue','AI share of revenue','AI transactions','B2B views from AI'];
-document.getElementById('t_main').innerHTML =
-  '<table><thead><tr>' + mainHead.map((h,i) => `<th class="${i?'num':'txt'}">${h}</th>`).join('') + '</tr></thead><tbody>' +
-  R.buckets.map((b,i) => {
-    const cls = i === R.buckets.length-1 ? 'last' : (b.kind === 'avg' ? 'avg' : '');
-    const period = b.kind === 'avg'
-      ? `${b.label} <span class="tag">${b.nweeks}-week avg</span>`
-      : `${b.label} <span class="tag">${b.sub}</span>`;
-    return `<tr class="${cls}"><td class="txt">${period}</td>
-      <td class="num">${nf1.format(b.antwerp.ai_sessions)}</td><td class="num">${pct2(b.antwerp.share)}</td>
-      <td class="num">${nf1.format(b.eupen.ai_sessions)}</td><td class="num">${pct2(b.eupen.share)}</td>
-      <td class="num">${eur(b.antwerp.ai_revenue)}</td><td class="num">${eur(b.antwerp.revenue)}</td>
-      <td class="num">${eur(b.eupen.ai_revenue)}</td><td class="num">${eur(b.eupen.revenue)}</td>
-      <td class="num">${eur(b.money.ai_revenue)}</td><td class="num">${eur(b.money.online_revenue)}</td>
-      <td class="num">${pct2(b.money.share)}</td><td class="num">${nf1.format(b.money.ai_transactions)}</td>
-      <td class="num">${nf1.format(b.b2b.ai_views)}</td></tr>`;
-  }).join('') + '</tbody></table>';
+const mainHead = ['Period','AI sessions','AI share of sessions','AI revenue','Online revenue','AI share of revenue','AI transactions','B2B views from AI','B2B landings from AI'];
+function mainTable(venue){
+  return '<table><thead><tr>' + mainHead.map((h,i) => `<th class="${i?'num':'txt'}">${h}</th>`).join('') + '</tr></thead><tbody>' +
+    R.buckets.map((b,i) => {
+      const v = b[venue];
+      const cls = i === R.buckets.length-1 ? 'last' : (b.kind === 'avg' ? 'avg' : '');
+      const period = b.kind === 'avg'
+        ? `${b.label} <span class="tag">${b.nweeks}-week avg</span>`
+        : `${b.label} <span class="tag">${b.sub}</span>`;
+      return `<tr class="${cls}"><td class="txt">${period}</td>
+        <td class="num">${nf1.format(v.ai_sessions)}</td><td class="num">${pct2(v.share)}</td>
+        <td class="num">${eur(v.ai_revenue)}</td><td class="num">${eur(v.revenue)}</td>
+        <td class="num">${pct2(v.revenue_share)}</td><td class="num">${nf1.format(v.ai_transactions)}</td>
+        <td class="num">${nf1.format(v.b2b.ai_views)}</td><td class="num">${nf1.format(v.b2b.ai_entrances)}</td></tr>`;
+    }).join('') + '</tbody></table>';
+}
+document.getElementById('t_main_antwerp').innerHTML = mainTable('antwerp');
+document.getElementById('t_main_eupen').innerHTML = mainTable('eupen');
 
 const b2bHead = ['Page','','AI views','AI sessions','AI landings','All views','AI share','AI views last week'];
 function b2bTable(venue){
@@ -415,7 +429,10 @@ document.getElementById('t_b2b_eupen').innerHTML = b2bTable('eupen');
 document.getElementById('b2bnote').innerHTML =
   `Totals cover the whole window shown above (${R.buckets[0].start} to ${R.buckets[R.buckets.length-1].end}). "AI landings" counts sessions that arrived from an assistant straight onto that page, which is the harder and more valuable signal.`;
 
-const moneyLead = R.buckets.filter(b => b.money.online_revenue > 0 && b.money.ai_revenue > 0);
+document.getElementById('mainnote').innerHTML =
+  `Each venue is read on its own: AI revenue against that venue's own online revenue, never against the other's. `
+  + `Sessions that land straight on the booking engine belong to no venue and are left out of both tables, which is why `
+  + `the two online-revenue columns do not add up to the ${eur(L.money.online_revenue)} booked site-wide last week.`;
 document.getElementById('moneynote').innerHTML =
   `Revenue is read from GA4 purchase events on both hosts, the website and the Apex booking engine, and is credited to the session that started at the assistant. `
   + `Two known reasons this <b>under-reports</b> AI money: an assistant that sends a visitor without a referrer lands in Direct, which carries most of the site's revenue; and a booking finished in a later visit is credited to that later source, not to the AI session.`;
