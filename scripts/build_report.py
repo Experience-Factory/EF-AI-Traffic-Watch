@@ -4,6 +4,7 @@
 Usage:  python scripts/build_report.py [--asof YYYY-MM-DD]
 """
 import argparse
+import base64
 import datetime as dt
 import json
 import os
@@ -52,6 +53,31 @@ B2B_GROUPS = [
 ]
 B2B_PAGES = [p for _, _, pages in B2B_GROUPS for p, _ in pages]
 B2B_PAGE_VENUE = {p: venue for _, venue, pages in B2B_GROUPS for p, _ in pages}
+
+
+# EF brand assets, embedded in the page so it renders correctly on its own,
+# outside the docs/ folder: IDigital for headlines, Raleway for body copy.
+FONT_FACES = [
+    ("EFHead", "idigital-light.otf", "opentype", "100 300"),
+    ("EFHead", "idigital-medium.otf", "opentype", "400 500"),
+    ("EFHead", "idigital-bold.otf", "opentype", "600 900"),
+    ("EFBody", "raleway.ttf", "truetype", "100 900"),
+]
+
+
+def asset_b64(name):
+    with open(os.path.join(DOCS, "assets", name), "rb") as f:
+        return base64.b64encode(f.read()).decode("ascii")
+
+
+def font_face_css():
+    mime = {"opentype": "font/opentype", "truetype": "font/truetype"}
+    return "\n".join(
+        "@font-face{font-family:'%s';src:url(data:%s;base64,%s) format('%s');"
+        "font-weight:%s;font-style:normal;font-display:swap}"
+        % (family, mime[fmt], asset_b64(fname), fmt, weight)
+        for family, fname, fmt, weight in FONT_FACES
+    )
 
 
 def safe_div(a, b):
@@ -190,6 +216,8 @@ def main():
 
     template = open(os.path.join(HERE, "report_template.html"), encoding="utf-8").read()
     html = template.replace("/*__DATA__*/null", json.dumps(payload, ensure_ascii=False))
+    html = html.replace("/*__FONTFACE__*/", font_face_css())
+    html = html.replace("__LOGO__", "data:image/png;base64," + asset_b64("logo_wordmark.png"))
     out = os.path.join(DOCS, "index.html")
     with open(out, "w", encoding="utf-8") as f:
         f.write(html)

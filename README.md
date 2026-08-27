@@ -40,8 +40,10 @@ scripts/series.py           daily rows -> weekly buckets
 scripts/build_report.py     buckets -> docs/index.html
 scripts/report_template.html the page itself (CSS + inline SVG charts)
 data/*.csv                  append-and-merge history, one row per day
-docs/index.html             the published report
-docs/assets/                EF fonts and logo
+docs/index.html             the published report, self-contained
+docs/assets/                EF brand source files (IDigital, Raleway, logo),
+                            base64-embedded into the page at build time so the
+                            report keeps the charter wherever it is opened
 ```
 
 ## Running it by hand

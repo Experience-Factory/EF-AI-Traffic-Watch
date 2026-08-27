@@ -6,17 +6,15 @@
 <meta name="robots" content="noindex, nofollow">
 <title>AI Traffic Watch | Experience Factory</title>
 <style>
-@font-face{font-family:'EFHead';src:url('assets/idigital-light.otf') format('opentype');font-weight:100 300;font-display:swap}
-@font-face{font-family:'EFHead';src:url('assets/idigital-medium.otf') format('opentype');font-weight:400 500;font-display:swap}
-@font-face{font-family:'EFHead';src:url('assets/idigital-bold.otf') format('opentype');font-weight:600 900;font-display:swap}
-@font-face{font-family:'EFBody';src:url('assets/raleway.ttf') format('truetype');font-weight:100 900;font-display:swap}
+/*__FONTFACE__*/
 
 :root{
   --red:#E30513; --red2:#F2545E;
   --teal:#00897B; --teal2:#22A692;
   --violet:#3D3AC7; --violet2:#7C79EE;
-  --ink:#101212; --ink2:#3A3F44; --muted:#6B7075;
-  --paper:#FFFFFF; --surface:#F6F6F7; --surface2:#EFEFF1; --line:#E2E3E6;
+  --black:#101212;                      /* Factory Black, dark surfaces */
+  --ink:#16191A; --ink2:#3A4045; --muted:#6B7176;   /* body text, EF kit */
+  --paper:#FFFFFF; --surface:#F4F5F6; --surface2:#EAECEE; --line:#DFE1E4;
   --head:'EFHead','Arial Narrow',Arial,sans-serif;
   --body:'EFBody','Segoe UI',Helvetica,Arial,sans-serif;
 }
@@ -27,7 +25,7 @@ body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:
 h1,h2,h3,.kicker,.kpi-value,.tag{font-family:var(--head)}
 
 /* ---------- header ---------- */
-header.top{background:var(--ink);color:#fff;padding:26px 0 30px}
+header.top{background:var(--black);color:#fff;padding:26px 0 30px}
 header.top .bar{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
 header.top img{height:30px;width:auto}
 header.top .stamp{font-size:12.5px;color:#B9BDC1;text-align:right;line-height:1.5}
@@ -37,15 +35,15 @@ header.top .sub{color:#D6D8DA;font-size:15.5px;max-width:760px}
 
 /* ---------- layout ---------- */
 section{padding:38px 0 6px}
-h2{font-size:13px;letter-spacing:2.2px;text-transform:uppercase;color:var(--red);margin:0 0 4px;font-weight:700}
-h2 + .lead{font-size:22px;font-weight:600;font-family:var(--head);margin:0 0 18px;color:var(--ink)}
+h2{font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin:0 0 4px;font-weight:700}
+h2 + .lead{font-size:22px;font-weight:700;letter-spacing:.3px;font-family:var(--head);margin:0 0 18px;color:var(--ink)}
 .note{color:var(--muted);font-size:13.5px;margin:10px 0 0;max-width:900px}
 
 /* ---------- KPI ---------- */
 .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:6px}
 @media(max-width:820px){.kpis{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:520px){.kpis{grid-template-columns:1fr}}
-.kpi{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:6px;padding:16px 16px 14px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--black);border-radius:6px;padding:16px 16px 14px}
 .kpi.antwerp{border-top-color:var(--red)} .kpi.eupen{border-top-color:var(--teal)} .kpi.ai{border-top-color:var(--violet)}
 .kpi .label{font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--muted);font-weight:700}
 .kpi .kpi-value{font-size:34px;font-weight:700;line-height:1.1;margin:8px 0 2px}
@@ -55,14 +53,14 @@ h2 + .lead{font-size:22px;font-weight:600;font-family:var(--head);margin:0 0 18p
 
 /* ---------- charts ---------- */
 .card{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:18px 18px 8px;margin-top:16px}
-.card h3{font-size:16px;margin:0 0 2px;font-weight:600}
+.card h3{font-size:16px;margin:0 0 2px;font-weight:700;letter-spacing:.3px}
 .card .cap{font-size:13px;color:var(--muted);margin:0 0 8px}
 .legend{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 2px}
 .legend span{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--ink2)}
 .legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
 .chart{position:relative}
 .chart svg{display:block;width:100%;height:auto}
-.tip{position:absolute;pointer-events:none;opacity:0;transition:opacity .1s;background:var(--ink);color:#fff;font-size:12.5px;
+.tip{position:absolute;pointer-events:none;opacity:0;transition:opacity .1s;background:var(--black);color:#fff;font-size:12.5px;
      padding:9px 11px;border-radius:5px;line-height:1.5;white-space:nowrap;z-index:5;transform:translate(-50%,-100%)}
 .tip b{font-family:var(--head);font-size:13px}
 .tip .row{display:flex;align-items:center;gap:7px}
@@ -73,28 +71,28 @@ h2 + .lead{font-size:22px;font-weight:600;font-family:var(--head);margin:0 0 18p
 /* ---------- tables ---------- */
 .tablewrap{overflow-x:auto;margin-top:16px;border:1px solid var(--line);border-radius:6px}
 table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
-thead th{background:var(--ink);color:#fff;font-family:var(--head);font-weight:600;font-size:12px;letter-spacing:.6px;
+thead th{background:var(--black);color:#fff;font-family:var(--head);font-weight:700;font-size:12px;letter-spacing:.6px;
          text-transform:uppercase;padding:10px 12px;white-space:nowrap}
 th.num,td.num{text-align:right}
 th.txt,td.txt{text-align:left}
 tbody td{padding:9px 12px;border-top:1px solid var(--line);white-space:nowrap}
 tbody tr.avg{background:var(--surface)}
 tbody tr.last td{font-weight:700;background:#FFF3F3}
-tbody tr.total td{font-weight:700;border-top:2px solid var(--ink)}
-tbody tr.group td{background:var(--surface2);font-family:var(--head);font-weight:600;font-size:12.5px;letter-spacing:.4px;text-transform:uppercase}
+tbody tr.total td{font-weight:700;border-top:2px solid var(--black)}
+tbody tr.group td{background:var(--surface2);font-family:var(--head);font-weight:700;font-size:12.5px;letter-spacing:.4px;text-transform:uppercase}
 tbody td.dim{color:var(--muted)}
-.tabtitle{font-family:var(--head);font-size:17px;font-weight:600;margin:26px 0 0;display:flex;align-items:center;gap:9px}
+.tabtitle{font-family:var(--head);font-size:17px;font-weight:700;letter-spacing:.5px;margin:26px 0 0;display:flex;align-items:center;gap:9px}
 .tabtitle i{width:12px;height:12px;border-radius:3px;display:inline-block}
 .tag{display:inline-block;font-size:10.5px;letter-spacing:.8px;text-transform:uppercase;padding:2px 6px;border-radius:3px;
      background:var(--surface2);color:var(--ink2);margin-left:8px}
 
 /* ---------- method ---------- */
 .method{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:20px 22px;margin-top:18px}
-.method h3{font-family:var(--head);font-size:15px;margin:0 0 10px}
+.method h3{font-family:var(--head);font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin:0 0 10px}
 .method ul{margin:0;padding-left:18px}
 .method li{margin:0 0 9px;font-size:13.5px;color:var(--ink2)}
 .method li b{color:var(--ink)}
-footer{margin-top:42px;background:var(--ink);color:#9BA0A5;font-size:12.5px;padding:20px 0}
+footer{margin-top:42px;background:var(--black);color:#9BA0A5;font-size:12.5px;padding:20px 0}
 footer a{color:#D6D8DA}
 </style>
 </head>
@@ -102,7 +100,7 @@ footer a{color:#D6D8DA}
 <header class="top">
   <div class="wrap">
     <div class="bar">
-      <img src="assets/logo_wordmark.png" alt="Experience Factory">
+      <img src="__LOGO__" alt="Experience Factory">
       <div class="stamp" id="stamp"></div>
     </div>
     <h1>AI Traffic Watch</h1>
