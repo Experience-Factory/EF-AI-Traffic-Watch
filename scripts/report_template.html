@@ -78,8 +78,11 @@ th.txt,td.txt{text-align:left}
 tbody td{padding:9px 12px;border-top:1px solid var(--line);white-space:nowrap}
 tbody tr.avg{background:var(--surface)}
 tbody tr.last td{font-weight:700;background:#FFF3F3}
+tbody tr.total td{font-weight:700;border-top:2px solid var(--ink)}
 tbody tr.group td{background:var(--surface2);font-family:var(--head);font-weight:600;font-size:12.5px;letter-spacing:.4px;text-transform:uppercase}
 tbody td.dim{color:var(--muted)}
+.tabtitle{font-family:var(--head);font-size:17px;font-weight:600;margin:26px 0 0;display:flex;align-items:center;gap:9px}
+.tabtitle i{width:12px;height:12px;border-radius:3px;display:inline-block}
 .tag{display:inline-block;font-size:10.5px;letter-spacing:.8px;text-transform:uppercase;padding:2px 6px;border-radius:3px;
      background:var(--surface2);color:var(--ink2);margin-left:8px}
 
@@ -156,7 +159,10 @@ footer a{color:#D6D8DA}
       <p class="cap">Page views counted whenever the visitor arrived from an AI assistant, whatever page they landed on.</p>
       <div class="chart" id="c_b2b"></div>
     </div>
-    <div class="tablewrap" id="t_b2b"></div>
+    <h3 class="tabtitle"><i style="background:var(--red)"></i>Antwerp</h3>
+    <div class="tablewrap" id="t_b2b_antwerp"></div>
+    <h3 class="tabtitle"><i style="background:var(--teal)"></i>Eupen</h3>
+    <div class="tablewrap" id="t_b2b_eupen"></div>
     <p class="note" id="b2bnote"></p>
   </section>
 
@@ -365,7 +371,7 @@ chart('c_b2b', {
 });
 
 /* ---------- tables ---------- */
-const mainHead = ['Period','Antwerp AI sessions','Antwerp share','Eupen AI sessions','Eupen share','Antwerp AI revenue','Eupen AI revenue','AI revenue, site-wide','All online revenue','AI share of revenue','AI transactions','B2B views from AI'];
+const mainHead = ['Period','Antwerp AI sessions','Antwerp share','Eupen AI sessions','Eupen share','Antwerp AI revenue','Antwerp online revenue','Eupen AI revenue','Eupen online revenue','AI revenue, site-wide','All online revenue','AI share of revenue','AI transactions','B2B views from AI'];
 document.getElementById('t_main').innerHTML =
   '<table><thead><tr>' + mainHead.map((h,i) => `<th class="${i?'num':'txt'}">${h}</th>`).join('') + '</tr></thead><tbody>' +
   R.buckets.map((b,i) => {
@@ -376,26 +382,36 @@ document.getElementById('t_main').innerHTML =
     return `<tr class="${cls}"><td class="txt">${period}</td>
       <td class="num">${nf1.format(b.antwerp.ai_sessions)}</td><td class="num">${pct2(b.antwerp.share)}</td>
       <td class="num">${nf1.format(b.eupen.ai_sessions)}</td><td class="num">${pct2(b.eupen.share)}</td>
-      <td class="num">${eur(b.antwerp.ai_revenue)}</td><td class="num">${eur(b.eupen.ai_revenue)}</td>
+      <td class="num">${eur(b.antwerp.ai_revenue)}</td><td class="num">${eur(b.antwerp.revenue)}</td>
+      <td class="num">${eur(b.eupen.ai_revenue)}</td><td class="num">${eur(b.eupen.revenue)}</td>
       <td class="num">${eur(b.money.ai_revenue)}</td><td class="num">${eur(b.money.online_revenue)}</td>
       <td class="num">${pct2(b.money.share)}</td><td class="num">${nf1.format(b.money.ai_transactions)}</td>
       <td class="num">${nf1.format(b.b2b.ai_views)}</td></tr>`;
   }).join('') + '</tbody></table>';
 
 const b2bHead = ['Page','','AI views','AI sessions','AI landings','All views','AI share','AI views last week'];
-let rows = '', currentGroup = '';
-R.b2b_detail.forEach(p => {
-  if (p.group !== currentGroup){
-    currentGroup = p.group;
-    rows += `<tr class="group"><td class="txt" colspan="8">${p.group}</td></tr>`;
-  }
-  rows += `<tr><td class="txt">${p.page}</td><td class="txt dim">${p.lang}</td>
-    <td class="num">${nf.format(p.ai_views)}</td><td class="num">${nf.format(p.ai_sessions)}</td>
-    <td class="num">${nf.format(p.ai_entrances)}</td><td class="num">${nf.format(p.views)}</td>
-    <td class="num">${pct2(p.share)}</td><td class="num">${nf.format(p.last_week_ai_views)}</td></tr>`;
-});
-document.getElementById('t_b2b').innerHTML =
-  '<table><thead><tr>' + b2bHead.map((h,i) => `<th class="${i<2?'txt':'num'}">${h}</th>`).join('') + '</tr></thead><tbody>' + rows + '</tbody></table>';
+function b2bTable(venue){
+  let rows = '', currentGroup = '', tot = {ai_views:0, ai_sessions:0, ai_entrances:0, views:0, last:0};
+  R.b2b_detail.filter(p => p.venue === venue).forEach(p => {
+    if (p.group !== currentGroup){
+      currentGroup = p.group;
+      rows += `<tr class="group"><td class="txt" colspan="8">${p.group}</td></tr>`;
+    }
+    tot.ai_views += p.ai_views; tot.ai_sessions += p.ai_sessions;
+    tot.ai_entrances += p.ai_entrances; tot.views += p.views; tot.last += p.last_week_ai_views;
+    rows += `<tr><td class="txt">${p.page}</td><td class="txt dim">${p.lang}</td>
+      <td class="num">${nf.format(p.ai_views)}</td><td class="num">${nf.format(p.ai_sessions)}</td>
+      <td class="num">${nf.format(p.ai_entrances)}</td><td class="num">${nf.format(p.views)}</td>
+      <td class="num">${pct2(p.share)}</td><td class="num">${nf.format(p.last_week_ai_views)}</td></tr>`;
+  });
+  rows += `<tr class="total"><td class="txt">All ${venue === 'antwerp' ? 'Antwerp' : 'Eupen'} B2B pages</td><td></td>
+    <td class="num">${nf.format(tot.ai_views)}</td><td class="num">${nf.format(tot.ai_sessions)}</td>
+    <td class="num">${nf.format(tot.ai_entrances)}</td><td class="num">${nf.format(tot.views)}</td>
+    <td class="num">${pct2(tot.views ? tot.ai_views/tot.views*100 : 0)}</td><td class="num">${nf.format(tot.last)}</td></tr>`;
+  return '<table><thead><tr>' + b2bHead.map((h,i) => `<th class="${i<2?'txt':'num'}">${h}</th>`).join('') + '</tr></thead><tbody>' + rows + '</tbody></table>';
+}
+document.getElementById('t_b2b_antwerp').innerHTML = b2bTable('antwerp');
+document.getElementById('t_b2b_eupen').innerHTML = b2bTable('eupen');
 document.getElementById('b2bnote').innerHTML =
   `Totals cover the whole window shown above (${R.buckets[0].start} to ${R.buckets[R.buckets.length-1].end}). "AI landings" counts sessions that arrived from an assistant straight onto that page, which is the harder and more valuable signal.`;
 
