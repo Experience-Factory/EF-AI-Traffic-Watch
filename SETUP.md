@@ -40,9 +40,11 @@ Repo → Settings → **Pages** → Source: *Deploy from a branch* → Branch: `
 folder: **/docs** → Save. The report is then served at the URL GitHub shows on that
 screen.
 
-> Private repositories need a GitHub Team or Enterprise plan for Pages. On the free
-> plan the choice is either to upgrade the org, or to accept a public repository. The
-> report contains weekly revenue figures, so this is worth a deliberate decision.
+> This repository is **public**, a decision taken deliberately on 27 August 2026 so
+> that Pages works without a paid plan. Anyone can read the report and the daily CSVs,
+> revenue figures included, without needing the link: a public repo is listed on the
+> organisation profile and returned by GitHub code search. Do not add anything here
+> that should stay internal.
 
 ## 5. First run
 
