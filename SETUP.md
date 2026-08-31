@@ -54,9 +54,15 @@ Actions → **Daily AI traffic report** → Run workflow. It pulls GA4, rebuilds
 
 ## Maintenance
 
-- **DST**: the cron is `0 7 * * *`, which is 09:00 Brussels while summer time is in
-  force. Change it to `0 8 * * *` after 26 October 2026, and back at the end of March.
-  Same nudge as the EF-Social-Media-Trendy workflow.
+- **Delivery time**: GitHub does not guarantee when a scheduled workflow starts. On
+  free runners this one was delayed by 5 to 12 hours during its first week. The
+  workflow therefore asks five times (05:00, 05:30, 06:00, 06:30 and 07:00 UTC) and
+  the first attempt that actually fires builds the report; the later ones see today's
+  commit already there and stop at the guard step, costing a few seconds. If the
+  report is regularly late, add more early crons rather than moving the existing ones.
+- **DST**: the crons run from `0 5 * * *`, which is 07:00 Brussels while summer time
+  is in force. Shift every line one hour later after 26 October 2026, and back at the
+  end of March. Same nudge as the EF-Social-Media-Trendy workflow.
 - **Service-account keys do not expire**, unlike the OAuth token on the developer
   machine. If the workflow starts failing with a permission error, check that the
   service account is still listed in GA4 property access management.
