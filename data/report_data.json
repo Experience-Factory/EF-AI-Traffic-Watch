@@ -1,85 +1,22 @@
 {
- "generated": "31 Aug 2026, 08:50",
- "asof": "2026-08-31",
- "asof_label": "Monday 31 August 2026",
+ "generated": "01 Sep 2026, 09:42",
+ "asof": "2026-09-01",
+ "asof_label": "Tuesday 01 September 2026",
  "week_label": "24 Aug - 30 Aug 2026",
  "week_number": 35,
  "detailed_months": [
-  "Jul 2026",
-  "Aug 2026"
+  "Aug 2026",
+  "Sep 2026"
  ],
  "averaged_months": [
-  "Jan 2026",
   "Feb 2026",
   "Mar 2026",
   "Apr 2026",
   "May 2026",
-  "Jun 2026"
+  "Jun 2026",
+  "Jul 2026"
  ],
  "buckets": [
-  {
-   "label": "Jan",
-   "sub": "5-week avg",
-   "kind": "avg",
-   "start": "2025-12-29",
-   "end": "2026-02-01",
-   "nweeks": 5,
-   "antwerp": {
-    "ai_sessions": 26.0,
-    "sessions": 4373.0,
-    "share": 0.59,
-    "ai_revenue": 0.0,
-    "revenue": 0.0,
-    "ai_transactions": 0.0,
-    "ai_key_events": 0.2,
-    "ai_engagement": 77.7,
-    "engagement": 72.1,
-    "revenue_share": 0.0,
-    "b2b": {
-     "ai_views": 2.0,
-     "ai_sessions": 1.4,
-     "ai_entrances": 0.2,
-     "views": 305.4
-    }
-   },
-   "eupen": {
-    "ai_sessions": 2.4,
-    "sessions": 1066.0,
-    "share": 0.23,
-    "ai_revenue": 0.0,
-    "revenue": 0.0,
-    "ai_transactions": 0.0,
-    "ai_key_events": 0.0,
-    "ai_engagement": 83.3,
-    "engagement": 76.2,
-    "revenue_share": 0.0,
-    "b2b": {
-     "ai_views": 0.4,
-     "ai_sessions": 0.4,
-     "ai_entrances": 0.0,
-     "views": 24.4
-    }
-   },
-   "all": {
-    "ai_sessions": 29.6,
-    "sessions": 7589.0,
-    "share": 0.39,
-    "ai_revenue": 0.0,
-    "revenue": 21576.9,
-    "ai_transactions": 0.0,
-    "ai_key_events": 0.2,
-    "ai_engagement": 75.0,
-    "engagement": 71.0,
-    "revenue_share": 0.0
-   },
-   "money": {
-    "ai_revenue_venues": 0.0,
-    "ai_revenue": 0.0,
-    "online_revenue": 21576.9,
-    "share": 0.0,
-    "ai_transactions": 0.0
-   }
-  },
   {
    "label": "Feb",
    "sub": "4-week avg",
@@ -396,316 +333,64 @@
    }
   },
   {
-   "label": "W27",
-   "sub": "29 Jun",
-   "kind": "week",
+   "label": "Jul",
+   "sub": "5-week avg",
+   "kind": "avg",
    "start": "2026-06-29",
-   "end": "2026-07-05",
-   "nweeks": 1,
-   "antwerp": {
-    "ai_sessions": 48.0,
-    "sessions": 10486.0,
-    "share": 0.46,
-    "ai_revenue": 0.0,
-    "revenue": 10173.0,
-    "ai_transactions": 0.0,
-    "ai_key_events": 0.0,
-    "ai_engagement": 68.8,
-    "engagement": 49.8,
-    "revenue_share": 0.0,
-    "b2b": {
-     "ai_views": 1.0,
-     "ai_sessions": 1.0,
-     "ai_entrances": 1.0,
-     "views": 259.0
-    }
-   },
-   "eupen": {
-    "ai_sessions": 9.0,
-    "sessions": 2358.0,
-    "share": 0.38,
-    "ai_revenue": 0.0,
-    "revenue": 2217.0,
-    "ai_transactions": 0.0,
-    "ai_key_events": 0.0,
-    "ai_engagement": 77.8,
-    "engagement": 57.0,
-    "revenue_share": 0.0,
-    "b2b": {
-     "ai_views": 0.0,
-     "ai_sessions": 0.0,
-     "ai_entrances": 0.0,
-     "views": 34.0
-    }
-   },
-   "all": {
-    "ai_sessions": 60.0,
-    "sessions": 14114.0,
-    "share": 0.43,
-    "ai_revenue": 0.0,
-    "revenue": 27417.5,
-    "ai_transactions": 0.0,
-    "ai_key_events": 0.0,
-    "ai_engagement": 68.3,
-    "engagement": 51.9,
-    "revenue_share": 0.0
-   },
-   "money": {
-    "ai_revenue_venues": 0.0,
-    "ai_revenue": 0.0,
-    "online_revenue": 27417.5,
-    "share": 0.0,
-    "ai_transactions": 0.0
-   }
-  },
-  {
-   "label": "W28",
-   "sub": "06 Jul",
-   "kind": "week",
-   "start": "2026-07-06",
-   "end": "2026-07-12",
-   "nweeks": 1,
-   "antwerp": {
-    "ai_sessions": 36.0,
-    "sessions": 10222.0,
-    "share": 0.35,
-    "ai_revenue": 0.0,
-    "revenue": 6972.0,
-    "ai_transactions": 0.0,
-    "ai_key_events": 0.0,
-    "ai_engagement": 63.9,
-    "engagement": 50.2,
-    "revenue_share": 0.0,
-    "b2b": {
-     "ai_views": 0.0,
-     "ai_sessions": 0.0,
-     "ai_entrances": 0.0,
-     "views": 382.0
-    }
-   },
-   "eupen": {
-    "ai_sessions": 9.0,
-    "sessions": 2179.0,
-    "share": 0.41,
-    "ai_revenue": 0.0,
-    "revenue": 2791.0,
-    "ai_transactions": 0.0,
-    "ai_key_events": 0.0,
-    "ai_engagement": 77.8,
-    "engagement": 56.3,
-    "revenue_share": 0.0,
-    "b2b": {
-     "ai_views": 0.0,
-     "ai_sessions": 0.0,
-     "ai_entrances": 0.0,
-     "views": 49.0
-    }
-   },
-   "all": {
-    "ai_sessions": 46.0,
-    "sessions": 13739.0,
-    "share": 0.33,
-    "ai_revenue": 0.0,
-    "revenue": 21836.0,
-    "ai_transactions": 0.0,
-    "ai_key_events": 0.0,
-    "ai_engagement": 65.2,
-    "engagement": 52.3,
-    "revenue_share": 0.0
-   },
-   "money": {
-    "ai_revenue_venues": 0.0,
-    "ai_revenue": 0.0,
-    "online_revenue": 21836.0,
-    "share": 0.0,
-    "ai_transactions": 0.0
-   }
-  },
-  {
-   "label": "W29",
-   "sub": "13 Jul",
-   "kind": "week",
-   "start": "2026-07-13",
-   "end": "2026-07-19",
-   "nweeks": 1,
-   "antwerp": {
-    "ai_sessions": 58.0,
-    "sessions": 7926.0,
-    "share": 0.73,
-    "ai_revenue": 0.0,
-    "revenue": 8717.0,
-    "ai_transactions": 0.0,
-    "ai_key_events": 0.0,
-    "ai_engagement": 79.3,
-    "engagement": 57.8,
-    "revenue_share": 0.0,
-    "b2b": {
-     "ai_views": 4.0,
-     "ai_sessions": 4.0,
-     "ai_entrances": 0.0,
-     "views": 646.0
-    }
-   },
-   "eupen": {
-    "ai_sessions": 12.0,
-    "sessions": 2447.0,
-    "share": 0.49,
-    "ai_revenue": 0.0,
-    "revenue": 4907.0,
-    "ai_transactions": 0.0,
-    "ai_key_events": 0.0,
-    "ai_engagement": 83.3,
-    "engagement": 59.8,
-    "revenue_share": 0.0,
-    "b2b": {
-     "ai_views": 0.0,
-     "ai_sessions": 0.0,
-     "ai_entrances": 0.0,
-     "views": 38.0
-    }
-   },
-   "all": {
-    "ai_sessions": 73.0,
-    "sessions": 11884.0,
-    "share": 0.61,
-    "ai_revenue": 0.0,
-    "revenue": 31293.0,
-    "ai_transactions": 0.0,
-    "ai_key_events": 0.0,
-    "ai_engagement": 76.7,
-    "engagement": 58.4,
-    "revenue_share": 0.0
-   },
-   "money": {
-    "ai_revenue_venues": 0.0,
-    "ai_revenue": 0.0,
-    "online_revenue": 31293.0,
-    "share": 0.0,
-    "ai_transactions": 0.0
-   }
-  },
-  {
-   "label": "W30",
-   "sub": "20 Jul",
-   "kind": "week",
-   "start": "2026-07-20",
-   "end": "2026-07-26",
-   "nweeks": 1,
-   "antwerp": {
-    "ai_sessions": 64.0,
-    "sessions": 7742.0,
-    "share": 0.83,
-    "ai_revenue": 0.0,
-    "revenue": 10853.9,
-    "ai_transactions": 0.0,
-    "ai_key_events": 0.0,
-    "ai_engagement": 75.0,
-    "engagement": 66.0,
-    "revenue_share": 0.0,
-    "b2b": {
-     "ai_views": 5.0,
-     "ai_sessions": 5.0,
-     "ai_entrances": 0.0,
-     "views": 633.0
-    }
-   },
-   "eupen": {
-    "ai_sessions": 30.0,
-    "sessions": 3437.0,
-    "share": 0.87,
-    "ai_revenue": 0.0,
-    "revenue": 4572.0,
-    "ai_transactions": 0.0,
-    "ai_key_events": 0.0,
-    "ai_engagement": 66.7,
-    "engagement": 59.4,
-    "revenue_share": 0.0,
-    "b2b": {
-     "ai_views": 0.0,
-     "ai_sessions": 0.0,
-     "ai_entrances": 0.0,
-     "views": 48.0
-    }
-   },
-   "all": {
-    "ai_sessions": 98.0,
-    "sessions": 12974.0,
-    "share": 0.76,
-    "ai_revenue": 0.0,
-    "revenue": 35899.9,
-    "ai_transactions": 0.0,
-    "ai_key_events": 0.0,
-    "ai_engagement": 70.4,
-    "engagement": 63.3,
-    "revenue_share": 0.0
-   },
-   "money": {
-    "ai_revenue_venues": 0.0,
-    "ai_revenue": 0.0,
-    "online_revenue": 35899.9,
-    "share": 0.0,
-    "ai_transactions": 0.0
-   }
-  },
-  {
-   "label": "W31",
-   "sub": "27 Jul",
-   "kind": "week",
-   "start": "2026-07-27",
    "end": "2026-08-02",
-   "nweeks": 1,
+   "nweeks": 5,
    "antwerp": {
-    "ai_sessions": 44.0,
-    "sessions": 9513.0,
-    "share": 0.46,
+    "ai_sessions": 50.0,
+    "sessions": 9177.8,
+    "share": 0.54,
     "ai_revenue": 0.0,
-    "revenue": 8193.0,
+    "revenue": 8981.78,
     "ai_transactions": 0.0,
     "ai_key_events": 0.0,
-    "ai_engagement": 79.5,
-    "engagement": 61.7,
+    "ai_engagement": 74.0,
+    "engagement": 56.5,
     "revenue_share": 0.0,
     "b2b": {
-     "ai_views": 5.0,
-     "ai_sessions": 5.0,
-     "ai_entrances": 0.0,
-     "views": 743.0
+     "ai_views": 3.0,
+     "ai_sessions": 3.0,
+     "ai_entrances": 0.2,
+     "views": 532.6
     }
    },
    "eupen": {
-    "ai_sessions": 18.0,
-    "sessions": 3892.0,
-    "share": 0.46,
+    "ai_sessions": 15.6,
+    "sessions": 2862.6,
+    "share": 0.54,
     "ai_revenue": 0.0,
-    "revenue": 5070.66,
+    "revenue": 3911.53,
     "ai_transactions": 0.0,
     "ai_key_events": 0.0,
-    "ai_engagement": 88.9,
-    "engagement": 51.9,
+    "ai_engagement": 76.9,
+    "engagement": 56.6,
     "revenue_share": 0.0,
     "b2b": {
-     "ai_views": 1.0,
-     "ai_sessions": 1.0,
+     "ai_views": 0.2,
+     "ai_sessions": 0.2,
      "ai_entrances": 0.0,
-     "views": 58.0
+     "views": 45.4
     }
    },
    "all": {
-    "ai_sessions": 62.0,
-    "sessions": 15226.0,
-    "share": 0.41,
+    "ai_sessions": 67.8,
+    "sessions": 13587.4,
+    "share": 0.5,
     "ai_revenue": 0.0,
-    "revenue": 33821.66,
+    "revenue": 30053.61,
     "ai_transactions": 0.0,
     "ai_key_events": 0.0,
-    "ai_engagement": 82.3,
-    "engagement": 58.6,
+    "ai_engagement": 72.9,
+    "engagement": 56.8,
     "revenue_share": 0.0
    },
    "money": {
     "ai_revenue_venues": 0.0,
     "ai_revenue": 0.0,
-    "online_revenue": 33821.66,
+    "online_revenue": 30053.61,
     "share": 0.0,
     "ai_transactions": 0.0
    }
@@ -908,14 +593,14 @@
    "nweeks": 1,
    "antwerp": {
     "ai_sessions": 254.0,
-    "sessions": 10328.0,
+    "sessions": 10327.0,
     "share": 2.46,
     "ai_revenue": 28.0,
     "revenue": 13648.0,
     "ai_transactions": 1.0,
     "ai_key_events": 1.0,
-    "ai_engagement": 75.2,
-    "engagement": 65.2,
+    "ai_engagement": 76.0,
+    "engagement": 65.5,
     "revenue_share": 0.21,
     "b2b": {
      "ai_views": 5.0,
@@ -926,14 +611,14 @@
    },
    "eupen": {
     "ai_sessions": 26.0,
-    "sessions": 3048.0,
+    "sessions": 3049.0,
     "share": 0.85,
     "ai_revenue": 416.0,
     "revenue": 6355.0,
     "ai_transactions": 1.0,
     "ai_key_events": 1.0,
     "ai_engagement": 88.5,
-    "engagement": 66.7,
+    "engagement": 67.0,
     "revenue_share": 6.55,
     "b2b": {
      "ai_views": 1.0,
@@ -944,14 +629,14 @@
    },
    "all": {
     "ai_sessions": 284.0,
-    "sessions": 15630.0,
+    "sessions": 15633.0,
     "share": 1.82,
     "ai_revenue": 444.0,
     "revenue": 38055.8,
     "ai_transactions": 2.0,
     "ai_key_events": 2.0,
-    "ai_engagement": 75.4,
-    "engagement": 64.3,
+    "ai_engagement": 76.1,
+    "engagement": 64.5,
     "revenue_share": 1.17
    },
    "money": {
@@ -1034,11 +719,11 @@
    "venue": "antwerp",
    "page": "/antwerp/business/",
    "lang": "EN menu",
-   "ai_views": 44,
-   "ai_sessions": 29,
+   "ai_views": 42,
+   "ai_sessions": 27,
    "ai_entrances": 13,
-   "views": 3046,
-   "share": 1.44,
+   "views": 2551,
+   "share": 1.65,
    "last_week_ai_views": 0,
    "last_week_views": 0
   },
@@ -1047,11 +732,11 @@
    "venue": "antwerp",
    "page": "/antwerp/nl/business/",
    "lang": "NL menu",
-   "ai_views": 19,
-   "ai_sessions": 15,
-   "ai_entrances": 1,
-   "views": 4518,
-   "share": 0.42,
+   "ai_views": 11,
+   "ai_sessions": 10,
+   "ai_entrances": 0,
+   "views": 3486,
+   "share": 0.32,
    "last_week_ai_views": 0,
    "last_week_views": 0
   },
@@ -1099,11 +784,11 @@
    "venue": "eupen",
    "page": "/eupen/business-event-teambuilding/",
    "lang": "EN",
-   "ai_views": 4,
-   "ai_sessions": 4,
+   "ai_views": 3,
+   "ai_sessions": 3,
    "ai_entrances": 0,
-   "views": 556,
-   "share": 0.72,
+   "views": 503,
+   "share": 0.6,
    "last_week_ai_views": 1,
    "last_week_views": 23
   },
@@ -1115,7 +800,7 @@
    "ai_views": 0,
    "ai_sessions": 0,
    "ai_entrances": 0,
-   "views": 312,
+   "views": 285,
    "share": 0.0,
    "last_week_ai_views": 0,
    "last_week_views": 21
@@ -1125,11 +810,11 @@
    "venue": "eupen",
    "page": "/eupen/de/firmenveranstaltung/",
    "lang": "DE",
-   "ai_views": 4,
-   "ai_sessions": 3,
+   "ai_views": 3,
+   "ai_sessions": 2,
    "ai_entrances": 0,
-   "views": 432,
-   "share": 0.93,
+   "views": 390,
+   "share": 0.77,
    "last_week_ai_views": 0,
    "last_week_views": 30
   }
@@ -1143,22 +828,22 @@
  "sources": [
   {
    "source": "chatgpt.com",
-   "sessions": 1094
+   "sessions": 769
   },
   {
    "source": "copilot.com",
-   "sessions": 14
+   "sessions": 5
   },
   {
    "source": "gemini.google.com",
-   "sessions": 8
-  },
-  {
-   "source": "perplexity",
-   "sessions": 2
+   "sessions": 4
   },
   {
    "source": "claude.ai",
+   "sessions": 1
+  },
+  {
+   "source": "perplexity",
    "sessions": 1
   }
  ],
@@ -1171,14 +856,14 @@
   "nweeks": 1,
   "antwerp": {
    "ai_sessions": 254.0,
-   "sessions": 10328.0,
+   "sessions": 10327.0,
    "share": 2.46,
    "ai_revenue": 28.0,
    "revenue": 13648.0,
    "ai_transactions": 1.0,
    "ai_key_events": 1.0,
-   "ai_engagement": 75.2,
-   "engagement": 65.2,
+   "ai_engagement": 76.0,
+   "engagement": 65.5,
    "revenue_share": 0.21,
    "b2b": {
     "ai_views": 5.0,
@@ -1189,14 +874,14 @@
   },
   "eupen": {
    "ai_sessions": 26.0,
-   "sessions": 3048.0,
+   "sessions": 3049.0,
    "share": 0.85,
    "ai_revenue": 416.0,
    "revenue": 6355.0,
    "ai_transactions": 1.0,
    "ai_key_events": 1.0,
    "ai_engagement": 88.5,
-   "engagement": 66.7,
+   "engagement": 67.0,
    "revenue_share": 6.55,
    "b2b": {
     "ai_views": 1.0,
@@ -1207,14 +892,14 @@
   },
   "all": {
    "ai_sessions": 284.0,
-   "sessions": 15630.0,
+   "sessions": 15633.0,
    "share": 1.82,
    "ai_revenue": 444.0,
    "revenue": 38055.8,
    "ai_transactions": 2.0,
    "ai_key_events": 2.0,
-   "ai_engagement": 75.4,
-   "engagement": 64.3,
+   "ai_engagement": 76.1,
+   "engagement": 64.5,
    "revenue_share": 1.17
   },
   "money": {
@@ -1289,8 +974,8 @@
   }
  },
  "baseline": {
-  "antwerp": 24.3,
-  "eupen": 6.3,
-  "all": 32.1
+  "antwerp": 28.3,
+  "eupen": 8.5,
+  "all": 38.5
  }
 }
