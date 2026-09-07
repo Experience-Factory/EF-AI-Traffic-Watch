@@ -55,11 +55,17 @@ Actions → **Daily AI traffic report** → Run workflow. It pulls GA4, rebuilds
 ## Maintenance
 
 - **Delivery time**: GitHub does not guarantee when a scheduled workflow starts. On
-  free runners this one was delayed by 5 to 12 hours during its first week. The
-  workflow therefore asks five times (05:00, 05:30, 06:00, 06:30 and 07:00 UTC) and
-  the first attempt that actually fires builds the report; the later ones see today's
-  commit already there and stop at the guard step, costing a few seconds. If the
-  report is regularly late, add more early crons rather than moving the existing ones.
+  free runners this one ran 7 to 14 hours late in its first week, then settled at a
+  steady 3h45 to 4h45 behind the cron. The crons are therefore set four hours before
+  the time the report is wanted (01:00 to 05:00 UTC for a 09:00 Brussels delivery),
+  asked five times; the first attempt that fires builds the report and the later ones
+  stop at the guard. Re-measure the delay with
+  `/repos/Experience-Factory/EF-AI-Traffic-Watch/actions/runs` and move the whole
+  block if GitHub's queue behaviour changes.
+- **Data freshness**: if GitHub ever fires the 01:00 UTC cron on time, the report is
+  built about three hours after the week closed and Sunday may be slightly
+  under-counted. The next morning's run re-pulls the whole window and overwrites those
+  rows, so the figure corrects itself within a day.
 - **DST**: the crons run from `0 5 * * *`, which is 07:00 Brussels while summer time
   is in force. Shift every line one hour later after 26 October 2026, and back at the
   end of March. Same nudge as the EF-Social-Media-Trendy workflow.

@@ -2,16 +2,18 @@ name: Daily AI traffic report
 
 on:
   schedule:
-    # GitHub queues scheduled jobs behind paid ones and has delayed this workflow by
-    # 5 to 12 hours on free runners. So we ask several times, starting early, and the
-    # first one that actually fires builds the report; the later ones find the day
-    # already done and stop immediately. 05:00 UTC = 07:00 Brussels while CEST is in
-    # force. After the DST change on 26 October, shift every line one hour later.
+    # GitHub queues scheduled jobs on free runners and starts them late. Measured over
+    # eleven days, the delay settled at a steady 3h45 to 4h45. The crons are therefore
+    # placed roughly four hours before the time the report is actually wanted, 09:00
+    # Brussels, and asked five times: the first attempt that really fires builds the
+    # report, the later ones find the day already done and stop at the guard.
+    # 01:00 UTC + ~4h of queue = 07:00 Brussels. Shift every line one hour later after
+    # the DST change on 26 October.
+    - cron: "0 1 * * *"
+    - cron: "0 2 * * *"
+    - cron: "0 3 * * *"
+    - cron: "0 4 * * *"
     - cron: "0 5 * * *"
-    - cron: "30 5 * * *"
-    - cron: "0 6 * * *"
-    - cron: "30 6 * * *"
-    - cron: "0 7 * * *"
   workflow_dispatch:
     inputs:
       asof:
