@@ -1,7 +1,7 @@
 {
- "generated": "28 Sep 2026, 06:05",
- "asof": "2026-09-28",
- "asof_label": "Monday 28 September 2026",
+ "generated": "29 Sep 2026, 06:23",
+ "asof": "2026-09-29",
+ "asof_label": "Tuesday 29 September 2026",
  "week_label": "21 Sep - 27 Sep 2026",
  "week_number": 39,
  "detailed_months": [
@@ -845,14 +845,14 @@
    "nweeks": 1,
    "antwerp": {
     "ai_sessions": 182.0,
-    "sessions": 10650.0,
+    "sessions": 10651.0,
     "share": 1.71,
     "ai_revenue": 0.0,
     "revenue": 12208.2,
     "ai_transactions": 0.0,
     "ai_key_events": 0.0,
-    "ai_engagement": 76.4,
-    "engagement": 58.9,
+    "ai_engagement": 76.9,
+    "engagement": 59.0,
     "revenue_share": 0.0,
     "b2b": {
      "ai_views": 11.0,
@@ -870,7 +870,7 @@
     "ai_transactions": 0.0,
     "ai_key_events": 0.0,
     "ai_engagement": 87.0,
-    "engagement": 48.0,
+    "engagement": 48.2,
     "revenue_share": 0.0,
     "b2b": {
      "ai_views": 0.0,
@@ -881,14 +881,14 @@
    },
    "all": {
     "ai_sessions": 217.0,
-    "sessions": 16038.0,
+    "sessions": 16041.0,
     "share": 1.35,
     "ai_revenue": 0.0,
     "revenue": 34791.6,
     "ai_transactions": 0.0,
     "ai_key_events": 0.0,
-    "ai_engagement": 73.7,
-    "engagement": 55.9,
+    "ai_engagement": 74.2,
+    "engagement": 56.1,
     "revenue_share": 0.0
    },
    "money": {
@@ -1108,14 +1108,14 @@
   "nweeks": 1,
   "antwerp": {
    "ai_sessions": 182.0,
-   "sessions": 10650.0,
+   "sessions": 10651.0,
    "share": 1.71,
    "ai_revenue": 0.0,
    "revenue": 12208.2,
    "ai_transactions": 0.0,
    "ai_key_events": 0.0,
-   "ai_engagement": 76.4,
-   "engagement": 58.9,
+   "ai_engagement": 76.9,
+   "engagement": 59.0,
    "revenue_share": 0.0,
    "b2b": {
     "ai_views": 11.0,
@@ -1133,7 +1133,7 @@
    "ai_transactions": 0.0,
    "ai_key_events": 0.0,
    "ai_engagement": 87.0,
-   "engagement": 48.0,
+   "engagement": 48.2,
    "revenue_share": 0.0,
    "b2b": {
     "ai_views": 0.0,
@@ -1144,14 +1144,14 @@
   },
   "all": {
    "ai_sessions": 217.0,
-   "sessions": 16038.0,
+   "sessions": 16041.0,
    "share": 1.35,
    "ai_revenue": 0.0,
    "revenue": 34791.6,
    "ai_transactions": 0.0,
    "ai_key_events": 0.0,
-   "ai_engagement": 73.7,
-   "engagement": 55.9,
+   "ai_engagement": 74.2,
+   "engagement": 56.1,
    "revenue_share": 0.0
   },
   "money": {
