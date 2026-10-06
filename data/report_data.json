@@ -1,7 +1,7 @@
 {
- "generated": "05 Oct 2026, 06:24",
- "asof": "2026-10-05",
- "asof_label": "Monday 05 October 2026",
+ "generated": "06 Oct 2026, 07:00",
+ "asof": "2026-10-06",
+ "asof_label": "Tuesday 06 October 2026",
  "week_label": "28 Sep - 04 Oct 2026",
  "week_number": 40,
  "detailed_months": [
@@ -656,14 +656,14 @@
    "nweeks": 1,
    "antwerp": {
     "ai_sessions": 203.0,
-    "sessions": 10281.0,
+    "sessions": 10284.0,
     "share": 1.97,
     "ai_revenue": 0.0,
     "revenue": 11677.4,
     "ai_transactions": 0.0,
     "ai_key_events": 0.0,
-    "ai_engagement": 78.3,
-    "engagement": 60.4,
+    "ai_engagement": 78.8,
+    "engagement": 60.6,
     "revenue_share": 0.0,
     "b2b": {
      "ai_views": 6.0,
@@ -681,7 +681,7 @@
     "ai_transactions": 0.0,
     "ai_key_events": 0.0,
     "ai_engagement": 80.8,
-    "engagement": 49.9,
+    "engagement": 50.0,
     "revenue_share": 0.0,
     "b2b": {
      "ai_views": 0.0,
@@ -698,8 +698,8 @@
     "revenue": 32368.6,
     "ai_transactions": 0.0,
     "ai_key_events": 0.0,
-    "ai_engagement": 76.9,
-    "engagement": 57.1,
+    "ai_engagement": 77.4,
+    "engagement": 57.3,
     "revenue_share": 0.0
    },
    "money": {
@@ -911,14 +911,14 @@
   "nweeks": 1,
   "antwerp": {
    "ai_sessions": 203.0,
-   "sessions": 10281.0,
+   "sessions": 10284.0,
    "share": 1.97,
    "ai_revenue": 0.0,
    "revenue": 11677.4,
    "ai_transactions": 0.0,
    "ai_key_events": 0.0,
-   "ai_engagement": 78.3,
-   "engagement": 60.4,
+   "ai_engagement": 78.8,
+   "engagement": 60.6,
    "revenue_share": 0.0,
    "b2b": {
     "ai_views": 6.0,
@@ -936,7 +936,7 @@
    "ai_transactions": 0.0,
    "ai_key_events": 0.0,
    "ai_engagement": 80.8,
-   "engagement": 49.9,
+   "engagement": 50.0,
    "revenue_share": 0.0,
    "b2b": {
     "ai_views": 0.0,
@@ -953,8 +953,8 @@
    "revenue": 32368.6,
    "ai_transactions": 0.0,
    "ai_key_events": 0.0,
-   "ai_engagement": 76.9,
-   "engagement": 57.1,
+   "ai_engagement": 77.4,
+   "engagement": 57.3,
    "revenue_share": 0.0
   },
   "money": {
