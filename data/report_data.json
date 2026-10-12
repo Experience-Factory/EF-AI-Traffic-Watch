@@ -1,9 +1,9 @@
 {
- "generated": "11 Oct 2026, 06:36",
- "asof": "2026-10-11",
- "asof_label": "Sunday 11 October 2026",
- "week_label": "28 Sep - 04 Oct 2026",
- "week_number": 40,
+ "generated": "12 Oct 2026, 06:43",
+ "asof": "2026-10-12",
+ "asof_label": "Monday 12 October 2026",
+ "week_label": "05 Oct - 11 Oct 2026",
+ "week_number": 41,
  "detailed_months": [
   "Sep 2026",
   "Oct 2026"
@@ -709,6 +709,69 @@
     "share": 0.0,
     "ai_transactions": 0.0
    }
+  },
+  {
+   "label": "W41",
+   "sub": "05 Oct",
+   "kind": "week",
+   "start": "2026-10-05",
+   "end": "2026-10-11",
+   "nweeks": 1,
+   "antwerp": {
+    "ai_sessions": 215.0,
+    "sessions": 10316.0,
+    "share": 2.08,
+    "ai_revenue": 0.0,
+    "revenue": 15117.2,
+    "ai_transactions": 0.0,
+    "ai_key_events": 0.0,
+    "ai_engagement": 79.1,
+    "engagement": 64.1,
+    "revenue_share": 0.0,
+    "b2b": {
+     "ai_views": 9.0,
+     "ai_sessions": 9.0,
+     "ai_entrances": 1.0,
+     "views": 572.0
+    }
+   },
+   "eupen": {
+    "ai_sessions": 17.0,
+    "sessions": 3100.0,
+    "share": 0.55,
+    "ai_revenue": 0.0,
+    "revenue": 4937.0,
+    "ai_transactions": 0.0,
+    "ai_key_events": 0.0,
+    "ai_engagement": 82.4,
+    "engagement": 55.0,
+    "revenue_share": 0.0,
+    "b2b": {
+     "ai_views": 0.0,
+     "ai_sessions": 0.0,
+     "ai_entrances": 0.0,
+     "views": 0.0
+    }
+   },
+   "all": {
+    "ai_sessions": 242.0,
+    "sessions": 15623.0,
+    "share": 1.55,
+    "ai_revenue": 0.0,
+    "revenue": 39241.6,
+    "ai_transactions": 0.0,
+    "ai_key_events": 0.0,
+    "ai_engagement": 76.4,
+    "engagement": 60.8,
+    "revenue_share": 0.0
+   },
+   "money": {
+    "ai_revenue_venues": 0.0,
+    "ai_revenue": 0.0,
+    "online_revenue": 39241.6,
+    "share": 0.0,
+    "ai_transactions": 0.0
+   }
   }
  ],
  "b2b_detail": [
@@ -717,26 +780,26 @@
    "venue": "antwerp",
    "page": "/antwerp/teambuilding/",
    "lang": "EN",
-   "ai_views": 21,
-   "ai_sessions": 23,
+   "ai_views": 22,
+   "ai_sessions": 24,
    "ai_entrances": 3,
-   "views": 1353,
-   "share": 1.55,
-   "last_week_ai_views": 0,
-   "last_week_views": 124
+   "views": 1446,
+   "share": 1.52,
+   "last_week_ai_views": 1,
+   "last_week_views": 93
   },
   {
    "group": "Antwerp - Teambuilding hub",
    "venue": "antwerp",
    "page": "/antwerp/nl/teambuilding/",
    "lang": "NL",
-   "ai_views": 26,
-   "ai_sessions": 26,
+   "ai_views": 31,
+   "ai_sessions": 30,
    "ai_entrances": 0,
-   "views": 2398,
-   "share": 1.08,
-   "last_week_ai_views": 3,
-   "last_week_views": 380
+   "views": 2776,
+   "share": 1.12,
+   "last_week_ai_views": 5,
+   "last_week_views": 378
   },
   {
    "group": "Antwerp - Bedrijfsevent / business events",
@@ -746,23 +809,23 @@
    "ai_views": 22,
    "ai_sessions": 19,
    "ai_entrances": 1,
-   "views": 1698,
-   "share": 1.3,
+   "views": 1716,
+   "share": 1.28,
    "last_week_ai_views": 0,
-   "last_week_views": 25
+   "last_week_views": 18
   },
   {
    "group": "Antwerp - Bedrijfsevent / business events",
    "venue": "antwerp",
    "page": "/antwerp/nl/bedrijfsevent/",
    "lang": "NL",
-   "ai_views": 10,
-   "ai_sessions": 10,
-   "ai_entrances": 1,
-   "views": 790,
-   "share": 1.27,
-   "last_week_ai_views": 0,
-   "last_week_views": 43
+   "ai_views": 12,
+   "ai_sessions": 12,
+   "ai_entrances": 2,
+   "views": 847,
+   "share": 1.42,
+   "last_week_ai_views": 2,
+   "last_week_views": 57
   },
   {
    "group": "Antwerp - Bedrijfsevent / business events",
@@ -811,7 +874,7 @@
    "ai_views": 0,
    "ai_sessions": 0,
    "ai_entrances": 0,
-   "views": 376,
+   "views": 377,
    "share": 0.0,
    "last_week_ai_views": 0,
    "last_week_views": 1
@@ -824,23 +887,23 @@
    "ai_views": 2,
    "ai_sessions": 1,
    "ai_entrances": 0,
-   "views": 434,
-   "share": 0.46,
+   "views": 444,
+   "share": 0.45,
    "last_week_ai_views": 0,
-   "last_week_views": 9
+   "last_week_views": 10
   },
   {
    "group": "Antwerp - Menu entry & legacy B2B pages",
    "venue": "antwerp",
    "page": "/antwerp/nl/business-event-discovery-call/",
    "lang": "NL",
-   "ai_views": 5,
-   "ai_sessions": 2,
+   "ai_views": 6,
+   "ai_sessions": 4,
    "ai_entrances": 1,
-   "views": 230,
-   "share": 2.17,
-   "last_week_ai_views": 3,
-   "last_week_views": 20
+   "views": 245,
+   "share": 2.45,
+   "last_week_ai_views": 1,
+   "last_week_views": 15
   },
   {
    "group": "Eupen - Business event & teambuilding",
@@ -891,18 +954,81 @@
  "sources": [
   {
    "source": "chatgpt.com",
-   "sessions": 1133
+   "sessions": 1370
   },
   {
    "source": "gemini.google.com",
-   "sessions": 5
+   "sessions": 9
   },
   {
    "source": "copilot.com",
-   "sessions": 3
+   "sessions": 4
   }
  ],
  "last": {
+  "label": "W41",
+  "sub": "05 Oct",
+  "kind": "week",
+  "start": "2026-10-05",
+  "end": "2026-10-11",
+  "nweeks": 1,
+  "antwerp": {
+   "ai_sessions": 215.0,
+   "sessions": 10316.0,
+   "share": 2.08,
+   "ai_revenue": 0.0,
+   "revenue": 15117.2,
+   "ai_transactions": 0.0,
+   "ai_key_events": 0.0,
+   "ai_engagement": 79.1,
+   "engagement": 64.1,
+   "revenue_share": 0.0,
+   "b2b": {
+    "ai_views": 9.0,
+    "ai_sessions": 9.0,
+    "ai_entrances": 1.0,
+    "views": 572.0
+   }
+  },
+  "eupen": {
+   "ai_sessions": 17.0,
+   "sessions": 3100.0,
+   "share": 0.55,
+   "ai_revenue": 0.0,
+   "revenue": 4937.0,
+   "ai_transactions": 0.0,
+   "ai_key_events": 0.0,
+   "ai_engagement": 82.4,
+   "engagement": 55.0,
+   "revenue_share": 0.0,
+   "b2b": {
+    "ai_views": 0.0,
+    "ai_sessions": 0.0,
+    "ai_entrances": 0.0,
+    "views": 0.0
+   }
+  },
+  "all": {
+   "ai_sessions": 242.0,
+   "sessions": 15623.0,
+   "share": 1.55,
+   "ai_revenue": 0.0,
+   "revenue": 39241.6,
+   "ai_transactions": 0.0,
+   "ai_key_events": 0.0,
+   "ai_engagement": 76.4,
+   "engagement": 60.8,
+   "revenue_share": 0.0
+  },
+  "money": {
+   "ai_revenue_venues": 0.0,
+   "ai_revenue": 0.0,
+   "online_revenue": 39241.6,
+   "share": 0.0,
+   "ai_transactions": 0.0
+  }
+ },
+ "prev": {
   "label": "W40",
   "sub": "28 Sep",
   "kind": "week",
@@ -961,69 +1087,6 @@
    "ai_revenue_venues": 0.0,
    "ai_revenue": 0.0,
    "online_revenue": 32368.6,
-   "share": 0.0,
-   "ai_transactions": 0.0
-  }
- },
- "prev": {
-  "label": "W39",
-  "sub": "21 Sep",
-  "kind": "week",
-  "start": "2026-09-21",
-  "end": "2026-09-27",
-  "nweeks": 1,
-  "antwerp": {
-   "ai_sessions": 182.0,
-   "sessions": 10651.0,
-   "share": 1.71,
-   "ai_revenue": 0.0,
-   "revenue": 12208.2,
-   "ai_transactions": 0.0,
-   "ai_key_events": 0.0,
-   "ai_engagement": 76.9,
-   "engagement": 59.0,
-   "revenue_share": 0.0,
-   "b2b": {
-    "ai_views": 11.0,
-    "ai_sessions": 9.0,
-    "ai_entrances": 0.0,
-    "views": 639.0
-   }
-  },
-  "eupen": {
-   "ai_sessions": 23.0,
-   "sessions": 3330.0,
-   "share": 0.69,
-   "ai_revenue": 0.0,
-   "revenue": 2624.0,
-   "ai_transactions": 0.0,
-   "ai_key_events": 0.0,
-   "ai_engagement": 87.0,
-   "engagement": 48.2,
-   "revenue_share": 0.0,
-   "b2b": {
-    "ai_views": 0.0,
-    "ai_sessions": 0.0,
-    "ai_entrances": 0.0,
-    "views": 0.0
-   }
-  },
-  "all": {
-   "ai_sessions": 217.0,
-   "sessions": 16041.0,
-   "share": 1.35,
-   "ai_revenue": 0.0,
-   "revenue": 34791.6,
-   "ai_transactions": 0.0,
-   "ai_key_events": 0.0,
-   "ai_engagement": 74.2,
-   "engagement": 56.1,
-   "revenue_share": 0.0
-  },
-  "money": {
-   "ai_revenue_venues": 0.0,
-   "ai_revenue": 0.0,
-   "online_revenue": 34791.6,
    "share": 0.0,
    "ai_transactions": 0.0
   }
