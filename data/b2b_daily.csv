@@ -1538,7 +1538,9 @@ date,page,ai_screenPageViews,ai_sessions,ai_entrances,all_screenPageViews,all_se
 2026-10-17,/antwerp/teambuilding/,0,0,0,5,4,0
 2026-10-17,/eupen/fr/teambuilding/,0,0,0,1,1,1
 2026-10-18,/antwerp/business-events/,0,0,0,1,1,0
-2026-10-18,/antwerp/nl/bedrijfsevent/,0,0,0,2,2,1
-2026-10-18,/antwerp/nl/teambuilding/,0,0,0,14,11,6
-2026-10-18,/antwerp/teambuilding/,0,0,0,3,2,0
+2026-10-18,/antwerp/nl/bedrijfsevent/,1,1,0,6,6,1
+2026-10-18,/antwerp/nl/business-event-discovery-call/,1,1,0,1,1,0
+2026-10-18,/antwerp/nl/teambuilding/,1,1,0,34,30,15
+2026-10-18,/antwerp/teambuilding/,0,0,0,5,4,0
 2026-10-18,/eupen/fr/teambuilding/,0,0,0,1,1,0
+2026-10-18,/eupen/teambuilding/,0,0,0,1,1,1
