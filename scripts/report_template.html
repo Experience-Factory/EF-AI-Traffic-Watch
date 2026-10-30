@@ -158,6 +158,16 @@ footer a{color:#D6D8DA}
   </section>
 
   <section>
+    <h2>Microsoft Copilot &amp; Bing</h2>
+    <div class="lead">How often Copilot and Bing's AI answers cite each venue</div>
+    <h3 class="tabtitle">Citations per week</h3>
+    <div class="tablewrap" id="t_bing"></div>
+    <h3 class="tabtitle">Pages cited over the window</h3>
+    <div class="tablewrap" id="t_bing_pages"></div>
+    <p class="note" id="bingnote"></p>
+  </section>
+
+  <section>
     <h2>Money</h2>
     <div class="lead">Online revenue booked in a session that started at an AI assistant</div>
     <div class="card">
@@ -322,18 +332,19 @@ function tipRow(color, name, value){
 
 /* ---------- header + KPIs ---------- */
 const fmtDay = iso => new Date(iso + 'T12:00:00').toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'});
-function gaiThrough(){
-  const t = R.gai_through || {};
+function throughOf(t){
+  t = t || {};
   if (t.antwerp && t.eupen && t.antwerp !== t.eupen)
     return `${fmtDay(t.antwerp)} (Antwerp), ${fmtDay(t.eupen)} (Eupen)`;
   return (t.antwerp || t.eupen) ? fmtDay(t.antwerp || t.eupen) : 'n/a';
 }
+const gaiThrough = () => throughOf(R.gai_through);
 const gaiFmt = v => v == null ? 'not read yet' : nf.format(v);
 const lastEnd = new Date(R.buckets[R.buckets.length-1].end + 'T12:00:00')
   .toLocaleDateString('en-GB', {weekday:'long', day:'numeric', month:'short', year:'numeric'});
 document.getElementById('stamp').innerHTML =
   `Report generated <b>${R.generated}</b><br>Data through ${lastEnd} · GA4 property 355017554`
-  + `<br>Search Console AI read through ${gaiThrough()}`;
+  + `<br>Search Console AI read through ${gaiThrough()} · Bing AI through ${throughOf(R.bing_through)}`;
 document.getElementById('weeklead').textContent =
   `Week ${R.week_number}, ${R.week_label}`;
 document.getElementById('cap1').textContent =
@@ -409,7 +420,7 @@ chart('c_gai', {
           {name:'Eupen', color:'#00897B', values:R.buckets.map(b=>b.eupen.gai_impressions)}],
   fmtAxis:v=>nf.format(v), fmtLabel:v=>nf.format(v),
   tooltip:i=>{const b=R.buckets[i];
-    const part = v => (b.kind === 'avg' && b[v].gai_weeks && b[v].gai_weeks < b.nweeks) ? ` (avg of ${b[v].gai_weeks} weeks with data)` : '';
+    const part = v => (b.kind === 'avg' && b[v].gai_impressions_weeks && b[v].gai_impressions_weeks < b.nweeks) ? ` (avg of ${b[v].gai_impressions_weeks} weeks with data)` : '';
     return tipHead(i)
     + tipRow('#E30513','Antwerp', gaiFmt(b.antwerp.gai_impressions) + part('antwerp'))
     + tipRow('#00897B','Eupen', gaiFmt(b.eupen.gai_impressions) + part('eupen'));}
@@ -418,6 +429,24 @@ document.getElementById('gainote').innerHTML =
   `This is the top of the funnel: it counts how often Google <b>showed</b> a venue page inside an AI answer, not visits. `
   + `Clicks from those answers arrive as ordinary Google organic traffic and cannot be told apart in GA4, so they are not in the AI sessions above. `
   + `ChatGPT, Copilot, Gemini and Perplexity answers are not in this count either: only their clicks are measured, in the Traffic section.`;
+
+{
+  const weeks = R.buckets.filter(b => b.antwerp.bing_citations != null || b.eupen.bing_citations != null);
+  const cell = v => v == null ? '<td class="num dim">–</td>' : `<td class="num">${nf.format(v)}</td>`;
+  document.getElementById('t_bing').innerHTML = '<table><thead><tr><th class="txt">Week</th><th class="num">Antwerp citations</th><th class="num">Eupen citations</th></tr></thead><tbody>'
+    + (weeks.length ? weeks.map(b => `<tr><td class="txt">${b.label} <span class="tag">${b.sub}</span></td>${cell(b.antwerp.bing_citations)}${cell(b.eupen.bing_citations)}</tr>`).join('')
+                    : '<tr><td class="txt dim" colspan="3">No complete week read yet</td></tr>')
+    + '</tbody></table>';
+  const vname = {antwerp:'Antwerp', eupen:'Eupen', other:'Other'};
+  document.getElementById('t_bing_pages').innerHTML = '<table><thead><tr><th class="txt">Page</th><th class="txt">Venue</th><th class="num">Citations</th></tr></thead><tbody>'
+    + (R.bing_pages.length ? R.bing_pages.map(p => `<tr><td class="txt">${p.page.replace(/^https?:\/\//,'')}</td><td class="txt">${vname[p.venue]}</td><td class="num">${nf.format(p.citations)}</td></tr>`).join('')
+                           : '<tr><td class="txt dim" colspan="3">No page cited yet</td></tr>')
+    + '</tbody></table>';
+  document.getElementById('bingnote').innerHTML =
+    `Bing Webmaster Tools "AI Performance" report: how many times Microsoft Copilot, Bing's AI summaries and Microsoft's partner tools cited a page of the site in an answer. No clicks are given. `
+    + `Bing only provides this report from 12 October 2026, so earlier weeks are empty. Read through ${throughOf(R.bing_through)}; a week only appears once all seven of its days have been read. `
+    + `A citation is credited to Antwerp or Eupen by the /antwerp/ or /eupen/ in its address, so a PDF on static.experience-factory.com/antwerp/ counts for Antwerp.`;
+}
 
 chart('c_rev', {
   type:'bar', h:300, r:26, title:'AI revenue by venue',
@@ -538,10 +567,11 @@ document.getElementById('method').innerHTML = `<h3>How each number is produced</
 <li><b>Antwerp history.</b> The /antwerp/ pages only exist in this GA4 property from 8 December 2025, so there is no earlier Antwerp baseline.</li>
 <li><b>Cookie consent.</b> Since 22 October 2026 (Eupen) and 27 October 2026 (Antwerp), GA4 only records visitors who accept analytics cookies. Visitors who refuse or ignore the banner leave no session, no AI session and no revenue in GA4. Figures before and after those dates are not directly comparable. Search Console impressions are not affected: they are counted by Google, not on the site.</li>
 <li><b>Google AI impressions.</b> Read from Search Console's "Generative AI" report (Performance), which counts impressions in AI Overviews and AI Mode together, with no clicks. Google does not offer this report through its API, so the daily figures are read in the Search Console interface and stored in gsc_ai_impressions_daily.csv. Each venue uses its own property, https://www.experience-factory.com/antwerp/ and https://www.experience-factory.com/eupen/, never a shared total. Search Console days follow Pacific time, GA4 days follow Brussels time, so a single day can differ slightly between the two; the weekly trend is not affected. The data starts on 18 May 2026.</li>
+<li><b>Bing AI citations.</b> Read from Bing Webmaster Tools' "AI Performance" report (public preview), on the property https://www.experience-factory.com/, then split by venue from each cited address. Bing does not offer this report through its API either, so it is read in the interface and stored in bing_ai_citations_daily.csv (per day and venue, zeros included) and bing_ai_pages_daily.csv (per day and page). The report starts on 12 October 2026 and Bing describes it as a sample of overall activity.</li>
 </ul>`;
 
 document.getElementById('foot').innerHTML =
-  `Experience Factory · AI Traffic Watch · rebuilt every morning at 09:00 Brussels time · as-of ${R.asof_label} · sources GA4 property 355017554 and Search Console (Generative AI report)`;
+  `Experience Factory · AI Traffic Watch · rebuilt every morning at 09:00 Brussels time · as-of ${R.asof_label} · sources GA4 property 355017554, Search Console (Generative AI report) and Bing Webmaster Tools (AI Performance)`;
 </script>
 </body>
 </html>

@@ -106,6 +106,28 @@ def safe_div(a, b):
     return (a / b) if b else 0.0
 
 
+def add_weekly_reading(buckets, bl, csv_name, field, key):
+    """Weekly figures from a CSV read by hand in a tool's interface (date, venue, value).
+
+    A week only counts once its seven days are all in the file, and a bucket with no
+    such week stays empty (None). Sets entry[venue][key] and entry[venue][key + "_weeks"]
+    and returns the last date read per venue."""
+    days_by_venue = {}
+    for r in S.read(csv_name):
+        days_by_venue.setdefault(r["venue"], {})[r["date"]] = float(r[field] or 0)
+    for entry, b in zip(buckets, bl):
+        for venue in ("antwerp", "eupen"):
+            days = days_by_venue.get(venue, {})
+            full = []
+            for w in b["weeks"]:
+                dates = [(w + dt.timedelta(days=k)).isoformat() for k in range(7)]
+                if all(d in days for d in dates):
+                    full.append(sum(days[d] for d in dates))
+            entry[venue][key] = round(sum(full) / len(full), 1) if full else None
+            entry[venue][key + "_weeks"] = len(full)
+    return {v: max(days) for v, days in days_by_venue.items()}
+
+
 def build_payload(asof):
     win = W.build(asof)
     weeks = win["weeks"]
@@ -116,6 +138,7 @@ def build_payload(asof):
     b2b_idx = S.weekly(b2b_rows, ["page"], None, PAGE_FIELDS, weeks)
 
     bl = S.buckets(win)
+    win_start, win_end = bl[0]["start"].isoformat(), bl[-1]["end"].isoformat()
     for venue in ("antwerp", "eupen", "all"):
         S.fill(bl, sess_idx, (venue,), SESSION_FIELDS)
     for page in B2B_PAGES:
@@ -201,28 +224,21 @@ def build_payload(asof):
         key=lambda x: -x["sessions"],
     )
 
-    # Google AI search impressions (Search Console "Generative AI" report). The report is
-    # not in the API, so the daily figures are read in the Search Console interface and
-    # committed to the CSV; see gsc_ai_impressions_daily.csv. A week only counts once its
-    # seven days are all in the file, and a bucket with no such week stays empty (None).
-    gsc_rows = S.read("gsc_ai_impressions_daily.csv")
-    gsc_days = {}
-    for r in gsc_rows:
-        gsc_days.setdefault(r["venue"], {})[r["date"]] = float(r["impressions"] or 0)
-    gsc_last = {v: max(days) for v, days in gsc_days.items()}
-    for entry, b in zip(buckets, bl):
-        for venue in ("antwerp", "eupen"):
-            days = gsc_days.get(venue, {})
-            full = []
-            for w in b["weeks"]:
-                dates = [(w + dt.timedelta(days=k)).isoformat() for k in range(7)]
-                if all(d in days for d in dates):
-                    full.append(sum(days[d] for d in dates))
-            entry[venue]["gai_impressions"] = round(sum(full) / len(full), 1) if full else None
-            entry[venue]["gai_weeks"] = len(full)
+    # Google AI search impressions (Search Console "Generative AI" report) and Bing AI
+    # citations (Bing Webmaster "AI Performance"). Neither is in an API, so the daily
+    # figures are read in each tool's interface and committed to their CSVs.
+    gsc_last = add_weekly_reading(buckets, bl, "gsc_ai_impressions_daily.csv", "impressions", "gai_impressions")
+    bing_last = add_weekly_reading(buckets, bl, "bing_ai_citations_daily.csv", "citations", "bing_citations")
+    bing_pages = {}
+    for r in S.read("bing_ai_pages_daily.csv"):
+        if win_start <= r["date"] <= win_end:
+            bing_pages[r["page"]] = bing_pages.get(r["page"], 0) + int(float(r["citations"] or 0))
+    bing_pages = [
+        {"page": p, "venue": "antwerp" if "/antwerp/" in p else "eupen" if "/eupen/" in p else "other", "citations": c}
+        for p, c in sorted(bing_pages.items(), key=lambda x: -x[1])
+    ]
 
     # assistant split per venue: last complete week + whole window, sessions and revenue
-    win_start, win_end = bl[0]["start"].isoformat(), bl[-1]["end"].isoformat()
     last_start = bl[-1]["start"].isoformat()
     split = {}
     for r in S.read("ai_sources_venue_daily.csv"):
@@ -280,6 +296,8 @@ def build_payload(asof):
         "prev": prev,
         "baseline": {k: round(v, 1) for k, v in base.items()},
         "gai_through": gsc_last,
+        "bing_through": bing_last,
+        "bing_pages": bing_pages,
         "assistants": assistants,
     }
 
