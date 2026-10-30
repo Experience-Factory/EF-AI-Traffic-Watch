@@ -1,5 +1,5 @@
 {
- "generated": "30 Oct 2026, 06:36",
+ "generated": "30 Oct 2026, 08:24",
  "asof": "2026-10-30",
  "asof_label": "Friday 30 October 2026",
  "week_label": "19 Oct - 25 Oct 2026",
@@ -40,7 +40,9 @@
      "ai_sessions": 1.0,
      "ai_entrances": 0.5,
      "views": 272.2
-    }
+    },
+    "gai_impressions": null,
+    "gai_weeks": 0
    },
    "eupen": {
     "ai_sessions": 6.2,
@@ -58,7 +60,9 @@
      "ai_sessions": 0.2,
      "ai_entrances": 0.0,
      "views": 44.5
-    }
+    },
+    "gai_impressions": null,
+    "gai_weeks": 0
    },
    "all": {
     "ai_sessions": 26.8,
@@ -103,7 +107,9 @@
      "ai_sessions": 1.0,
      "ai_entrances": 0.2,
      "views": 182.8
-    }
+    },
+    "gai_impressions": null,
+    "gai_weeks": 0
    },
    "eupen": {
     "ai_sessions": 3.6,
@@ -121,7 +127,9 @@
      "ai_sessions": 0.0,
      "ai_entrances": 0.0,
      "views": 30.2
-    }
+    },
+    "gai_impressions": null,
+    "gai_weeks": 0
    },
    "all": {
     "ai_sessions": 20.0,
@@ -166,7 +174,9 @@
      "ai_sessions": 3.5,
      "ai_entrances": 1.8,
      "views": 384.0
-    }
+    },
+    "gai_impressions": 458.0,
+    "gai_weeks": 2
    },
    "eupen": {
     "ai_sessions": 12.8,
@@ -184,7 +194,9 @@
      "ai_sessions": 0.0,
      "ai_entrances": 0.0,
      "views": 35.2
-    }
+    },
+    "gai_impressions": 238.5,
+    "gai_weeks": 2
    },
    "all": {
     "ai_sessions": 50.2,
@@ -229,7 +241,9 @@
      "ai_sessions": 1.5,
      "ai_entrances": 0.0,
      "views": 281.8
-    }
+    },
+    "gai_impressions": 569.5,
+    "gai_weeks": 4
    },
    "eupen": {
     "ai_sessions": 9.8,
@@ -247,7 +261,9 @@
      "ai_sessions": 0.5,
      "ai_entrances": 0.0,
      "views": 39.5
-    }
+    },
+    "gai_impressions": 306.8,
+    "gai_weeks": 4
    },
    "all": {
     "ai_sessions": 43.2,
@@ -292,7 +308,9 @@
      "ai_sessions": 3.0,
      "ai_entrances": 0.2,
      "views": 532.6
-    }
+    },
+    "gai_impressions": 766.0,
+    "gai_weeks": 5
    },
    "eupen": {
     "ai_sessions": 15.6,
@@ -310,7 +328,9 @@
      "ai_sessions": 0.2,
      "ai_entrances": 0.0,
      "views": 45.4
-    }
+    },
+    "gai_impressions": 414.0,
+    "gai_weeks": 5
    },
    "all": {
     "ai_sessions": 67.8,
@@ -355,7 +375,9 @@
      "ai_sessions": 6.5,
      "ai_entrances": 0.0,
      "views": 671.8
-    }
+    },
+    "gai_impressions": 1095.2,
+    "gai_weeks": 4
    },
    "eupen": {
     "ai_sessions": 30.0,
@@ -373,7 +395,9 @@
      "ai_sessions": 0.2,
      "ai_entrances": 0.0,
      "views": 55.0
-    }
+    },
+    "gai_impressions": 541.0,
+    "gai_weeks": 4
    },
    "all": {
     "ai_sessions": 195.0,
@@ -418,7 +442,9 @@
      "ai_sessions": 16.0,
      "ai_entrances": 3.0,
      "views": 496.0
-    }
+    },
+    "gai_impressions": 1125.0,
+    "gai_weeks": 1
    },
    "eupen": {
     "ai_sessions": 38.0,
@@ -436,7 +462,9 @@
      "ai_sessions": 2.0,
      "ai_entrances": 0.0,
      "views": 78.0
-    }
+    },
+    "gai_impressions": 540.0,
+    "gai_weeks": 1
    },
    "all": {
     "ai_sessions": 218.0,
@@ -481,7 +509,9 @@
      "ai_sessions": 13.0,
      "ai_entrances": 2.0,
      "views": 691.0
-    }
+    },
+    "gai_impressions": 1548.0,
+    "gai_weeks": 1
    },
    "eupen": {
     "ai_sessions": 39.0,
@@ -499,7 +529,9 @@
      "ai_sessions": 2.0,
      "ai_entrances": 0.0,
      "views": 103.0
-    }
+    },
+    "gai_impressions": 714.0,
+    "gai_weeks": 1
    },
    "all": {
     "ai_sessions": 236.0,
@@ -544,7 +576,9 @@
      "ai_sessions": 7.0,
      "ai_entrances": 0.0,
      "views": 643.0
-    }
+    },
+    "gai_impressions": 1530.0,
+    "gai_weeks": 1
    },
    "eupen": {
     "ai_sessions": 27.0,
@@ -562,7 +596,9 @@
      "ai_sessions": 0.0,
      "ai_entrances": 0.0,
      "views": 96.0
-    }
+    },
+    "gai_impressions": 746.0,
+    "gai_weeks": 1
    },
    "all": {
     "ai_sessions": 236.0,
@@ -607,7 +643,9 @@
      "ai_sessions": 9.0,
      "ai_entrances": 0.0,
      "views": 639.0
-    }
+    },
+    "gai_impressions": 1832.0,
+    "gai_weeks": 1
    },
    "eupen": {
     "ai_sessions": 23.0,
@@ -625,7 +663,9 @@
      "ai_sessions": 0.0,
      "ai_entrances": 0.0,
      "views": 0.0
-    }
+    },
+    "gai_impressions": 638.0,
+    "gai_weeks": 1
    },
    "all": {
     "ai_sessions": 217.0,
@@ -670,7 +710,9 @@
      "ai_sessions": 4.0,
      "ai_entrances": 1.0,
      "views": 602.0
-    }
+    },
+    "gai_impressions": 1497.0,
+    "gai_weeks": 1
    },
    "eupen": {
     "ai_sessions": 26.0,
@@ -688,7 +730,9 @@
      "ai_sessions": 0.0,
      "ai_entrances": 0.0,
      "views": 0.0
-    }
+    },
+    "gai_impressions": 688.0,
+    "gai_weeks": 1
    },
    "all": {
     "ai_sessions": 234.0,
@@ -733,7 +777,9 @@
      "ai_sessions": 9.0,
      "ai_entrances": 1.0,
      "views": 572.0
-    }
+    },
+    "gai_impressions": 2111.0,
+    "gai_weeks": 1
    },
    "eupen": {
     "ai_sessions": 17.0,
@@ -751,7 +797,9 @@
      "ai_sessions": 0.0,
      "ai_entrances": 0.0,
      "views": 0.0
-    }
+    },
+    "gai_impressions": 851.0,
+    "gai_weeks": 1
    },
    "all": {
     "ai_sessions": 236.0,
@@ -796,7 +844,9 @@
      "ai_sessions": 15.0,
      "ai_entrances": 2.0,
      "views": 612.0
-    }
+    },
+    "gai_impressions": 2946.0,
+    "gai_weeks": 1
    },
    "eupen": {
     "ai_sessions": 32.0,
@@ -814,7 +864,9 @@
      "ai_sessions": 0.0,
      "ai_entrances": 0.0,
      "views": 0.0
-    }
+    },
+    "gai_impressions": 1139.0,
+    "gai_weeks": 1
    },
    "all": {
     "ai_sessions": 263.0,
@@ -859,7 +911,9 @@
      "ai_sessions": 22.0,
      "ai_entrances": 6.0,
      "views": 615.0
-    }
+    },
+    "gai_impressions": null,
+    "gai_weeks": 0
    },
    "eupen": {
     "ai_sessions": 53.0,
@@ -877,7 +931,9 @@
      "ai_sessions": 0.0,
      "ai_entrances": 0.0,
      "views": 0.0
-    }
+    },
+    "gai_impressions": null,
+    "gai_weeks": 0
    },
    "all": {
     "ai_sessions": 423.0,
@@ -1122,7 +1178,9 @@
     "ai_sessions": 22.0,
     "ai_entrances": 6.0,
     "views": 615.0
-   }
+   },
+   "gai_impressions": null,
+   "gai_weeks": 0
   },
   "eupen": {
    "ai_sessions": 53.0,
@@ -1140,7 +1198,9 @@
     "ai_sessions": 0.0,
     "ai_entrances": 0.0,
     "views": 0.0
-   }
+   },
+   "gai_impressions": null,
+   "gai_weeks": 0
   },
   "all": {
    "ai_sessions": 423.0,
@@ -1185,7 +1245,9 @@
     "ai_sessions": 15.0,
     "ai_entrances": 2.0,
     "views": 612.0
-   }
+   },
+   "gai_impressions": 2946.0,
+   "gai_weeks": 1
   },
   "eupen": {
    "ai_sessions": 32.0,
@@ -1203,7 +1265,9 @@
     "ai_sessions": 0.0,
     "ai_entrances": 0.0,
     "views": 0.0
-   }
+   },
+   "gai_impressions": 1139.0,
+   "gai_weeks": 1
   },
   "all": {
    "ai_sessions": 263.0,
@@ -1229,5 +1293,9 @@
   "antwerp": 51.7,
   "eupen": 13.0,
   "all": 67.2
+ },
+ "gai_through": {
+  "antwerp": "2026-10-20",
+  "eupen": "2026-10-20"
  }
 }

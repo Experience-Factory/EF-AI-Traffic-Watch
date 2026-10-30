@@ -179,6 +179,26 @@ def build_payload(asof):
         key=lambda x: -x["sessions"],
     )
 
+    # Google AI search impressions (Search Console "Generative AI" report). The report is
+    # not in the API, so the daily figures are read in the Search Console interface and
+    # committed to the CSV; see gsc_ai_impressions_daily.csv. A week only counts once its
+    # seven days are all in the file, and a bucket with no such week stays empty (None).
+    gsc_rows = S.read("gsc_ai_impressions_daily.csv")
+    gsc_days = {}
+    for r in gsc_rows:
+        gsc_days.setdefault(r["venue"], {})[r["date"]] = float(r["impressions"] or 0)
+    gsc_last = {v: max(days) for v, days in gsc_days.items()}
+    for entry, b in zip(buckets, bl):
+        for venue in ("antwerp", "eupen"):
+            days = gsc_days.get(venue, {})
+            full = []
+            for w in b["weeks"]:
+                dates = [(w + dt.timedelta(days=k)).isoformat() for k in range(7)]
+                if all(d in days for d in dates):
+                    full.append(sum(days[d] for d in dates))
+            entry[venue]["gai_impressions"] = round(sum(full) / len(full), 1) if full else None
+            entry[venue]["gai_weeks"] = len(full)
+
     last, prev = buckets[-1], buckets[-2]
     baseline_buckets = [b for b in buckets if b["kind"] == "avg"]
     base = {
@@ -200,6 +220,7 @@ def build_payload(asof):
         "last": last,
         "prev": prev,
         "baseline": {k: round(v, 1) for k, v in base.items()},
+        "gai_through": gsc_last,
     }
 
 
