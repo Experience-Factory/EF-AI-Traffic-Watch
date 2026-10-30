@@ -58,6 +58,7 @@ h2 + .lead{font-size:22px;font-weight:700;letter-spacing:.3px;font-family:var(--
 .legend{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 2px}
 .legend span{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--ink2)}
 .legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
+.legend i.dash{width:18px;height:0;border-radius:0;border-top:2.5px dashed}
 .chart{position:relative}
 .chart svg{display:block;width:100%;height:auto}
 .tip{position:absolute;pointer-events:none;opacity:0;transition:opacity .1s;background:var(--black);color:#fff;font-size:12.5px;
@@ -123,7 +124,8 @@ footer a{color:#D6D8DA}
     <div class="card">
       <h3>AI sessions per week</h3>
       <p class="cap" id="cap1"></p>
-      <div class="legend"><span><i style="background:var(--red)"></i>Antwerp</span><span><i style="background:var(--teal)"></i>Eupen</span></div>
+      <div class="legend"><span><i style="background:var(--red)"></i>Antwerp, GA4</span><span><i style="background:var(--teal)"></i>Eupen, GA4</span>
+        <span><i class="dash" style="border-color:var(--red)"></i>Antwerp, Matomo (every visitor)</span><span><i class="dash" style="border-color:var(--teal)"></i>Eupen, Matomo (every visitor)</span></div>
       <div class="chart" id="c_sessions"></div>
     </div>
     <div class="card">
@@ -131,6 +133,12 @@ footer a{color:#D6D8DA}
       <p class="cap">AI sessions divided by all sessions landing on that venue, per week.</p>
       <div class="legend"><span><i style="background:var(--red)"></i>Antwerp</span><span><i style="background:var(--teal)"></i>Eupen</span></div>
       <div class="chart" id="c_share"></div>
+    </div>
+    <div class="card">
+      <h3>Share of the traffic GA4 still counts</h3>
+      <p class="cap">GA4 sessions divided by Matomo visits, per week. Matomo counts every visitor without cookies; GA4 only those who accept them.</p>
+      <div class="legend"><span><i style="background:var(--red)"></i>Antwerp</span><span><i style="background:var(--teal)"></i>Eupen</span></div>
+      <div class="chart" id="c_coverage"></div>
     </div>
     <p class="note" id="consentnote"></p>
   </section>
@@ -247,7 +255,7 @@ function chart(hostId, opt){
   const iw = W - m.l - m.r, ih = H - m.t - m.b;
   const n = cats.length;
   const all = opt.series.flatMap(s => s.values).filter(v => v != null);
-  const top = niceMax(Math.max(...all, opt.floor || 0) * 1.08);
+  const top = opt.top || niceMax(Math.max(...all, opt.floor || 0) * 1.08);
   const x = i => m.l + (i + 0.5) * iw / n;
   const y = v => m.t + ih - (v / top) * ih;
   const svg = [];
@@ -286,9 +294,12 @@ function chart(hostId, opt){
         d += `${pen?'L':'M'}${x(i).toFixed(1)},${y(v).toFixed(1)} `;
         pen = true; lastI = i;
       });
-      svg.push(`<path d="${d}" fill="none" stroke="${s.color}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>`);
-      s.values.forEach((v,i) => { if (v != null) svg.push(`<circle cx="${x(i)}" cy="${y(v)}" r="4" fill="${s.color}" stroke="#fff" stroke-width="2"/>`); });
-      if (lastI >= 0){
+      // a dashed series is a reference line: open dots, no end label
+      svg.push(`<path d="${d}" fill="none" stroke="${s.color}" stroke-width="${s.dash?2:2.4}" ${s.dash?'stroke-dasharray="6 5"':''} stroke-linejoin="round" stroke-linecap="round"/>`);
+      s.values.forEach((v,i) => { if (v != null) svg.push(s.dash
+        ? `<circle cx="${x(i)}" cy="${y(v)}" r="3" fill="#fff" stroke="${s.color}" stroke-width="1.8"/>`
+        : `<circle cx="${x(i)}" cy="${y(v)}" r="4" fill="${s.color}" stroke="#fff" stroke-width="2"/>`); });
+      if (lastI >= 0 && !s.dash){
         const lastV = s.values[lastI];
         svg.push(`<text x="${x(lastI)+12}" y="${y(lastV)+4}" font-size="12.5" font-weight="700" fill="${s.color}" font-family="EFHead,sans-serif">${opt.fmtLabel(lastV)}</text>`);
       }
@@ -344,7 +355,7 @@ const lastEnd = new Date(R.buckets[R.buckets.length-1].end + 'T12:00:00')
   .toLocaleDateString('en-GB', {weekday:'long', day:'numeric', month:'short', year:'numeric'});
 document.getElementById('stamp').innerHTML =
   `Report generated <b>${R.generated}</b><br>Data through ${lastEnd} · GA4 property 355017554`
-  + `<br>Search Console AI read through ${gaiThrough()} · Bing AI through ${throughOf(R.bing_through)}`;
+  + `<br>Matomo through ${throughOf(R.matomo_through)} · Search Console AI read through ${gaiThrough()} · Bing AI through ${throughOf(R.bing_through)}`;
 document.getElementById('weeklead').textContent =
   `Week ${R.week_number}, ${R.week_label}`;
 document.getElementById('cap1').textContent =
@@ -367,7 +378,9 @@ document.getElementById('kpis').innerHTML = ['antwerp','eupen'].flatMap(v => {
   return [
     {cls, label:`${name} AI sessions`, value:nf.format(L[v].ai_sessions),
      sub:pct2(L[v].share) + ` of ${name} sessions`,
-     d:delta(L[v].ai_sessions, P[v].ai_sessions), t:times(L[v].ai_sessions, B[v])},
+     d:delta(L[v].ai_sessions, P[v].ai_sessions),
+     t:times(L[v].ai_sessions, B[v]) + (L[v].matomo_ai == null ? ''
+       : `<br>Matomo, every visitor: <b>${nf.format(L[v].matomo_ai)}</b> AI visits · GA4 sees ${nf.format(L[v].coverage)}% of the traffic`)},
     {cls, label:`${name} AI revenue`, value:eur(L[v].ai_revenue),
      sub:pct2(L[v].revenue_share) + ` of ${name} online revenue`,
      d:`${nf.format(L[v].ai_transactions)} transaction(s)`,
@@ -391,14 +404,26 @@ document.getElementById('kpinote').innerHTML =
   `Assistants seen over ${R.detailed_months.join(' and ')}: ${topSrc}${R.sources.length>3 ? ', and ' + (R.sources.length-3) + ' more' : ''}.`;
 
 /* ---------- charts ---------- */
+const mFmt = v => v == null ? 'no Matomo data' : nf1.format(v);
 chart('c_sessions', {
   type:'line', title:'AI sessions per week',
   series:[{name:'Antwerp', color:'#E30513', values:R.buckets.map(b=>b.antwerp.ai_sessions)},
-          {name:'Eupen', color:'#00897B', values:R.buckets.map(b=>b.eupen.ai_sessions)}],
+          {name:'Eupen', color:'#00897B', values:R.buckets.map(b=>b.eupen.ai_sessions)},
+          {name:'Antwerp Matomo', color:'#E30513', dash:true, values:R.buckets.map(b=>b.antwerp.matomo_ai)},
+          {name:'Eupen Matomo', color:'#00897B', dash:true, values:R.buckets.map(b=>b.eupen.matomo_ai)}],
   fmtAxis:v=>nf.format(v), fmtLabel:v=>nf.format(v),
   tooltip:i=>{const b=R.buckets[i];return tipHead(i)
-    + tipRow('#E30513','Antwerp', nf1.format(b.antwerp.ai_sessions) + ' AI sessions (' + pct2(b.antwerp.share) + ')')
-    + tipRow('#00897B','Eupen', nf1.format(b.eupen.ai_sessions) + ' AI sessions (' + pct2(b.eupen.share) + ')');}
+    + tipRow('#E30513','Antwerp', nf1.format(b.antwerp.ai_sessions) + ' AI sessions in GA4 (' + pct2(b.antwerp.share) + ') · ' + mFmt(b.antwerp.matomo_ai) + ' in Matomo')
+    + tipRow('#00897B','Eupen', nf1.format(b.eupen.ai_sessions) + ' AI sessions in GA4 (' + pct2(b.eupen.share) + ') · ' + mFmt(b.eupen.matomo_ai) + ' in Matomo');}
+});
+chart('c_coverage', {
+  type:'line', title:'GA4 sessions as a share of Matomo visits', top:100,
+  series:[{name:'Antwerp', color:'#E30513', values:R.buckets.map(b=>b.antwerp.coverage)},
+          {name:'Eupen', color:'#00897B', values:R.buckets.map(b=>b.eupen.coverage)}],
+  fmtAxis:v=>nf.format(v)+'%', fmtLabel:v=>nf.format(v)+'%',
+  tooltip:i=>{const b=R.buckets[i]; const c = v => b[v].coverage == null ? 'no Matomo data'
+      : `${nf.format(b[v].coverage)}% (${nf.format(b[v].sessions)} GA4 sessions / ${nf.format(b[v].matomo_visits)} Matomo visits)`;
+    return tipHead(i) + tipRow('#E30513','Antwerp', c('antwerp')) + tipRow('#00897B','Eupen', c('eupen'));}
 });
 chart('c_share', {
   type:'line', title:'AI share of sessions',
@@ -499,11 +524,11 @@ document.getElementById('asstnote').innerHTML =
   + `An assistant only appears once it has sent at least one visit. Its revenue is GA4 purchase revenue booked in the session it started, with the same under-reporting as in the Money section.`;
 document.getElementById('consentnote').innerHTML =
   `<b>Cookie banner.</b> A consent banner went live on the Eupen pages on 22 October 2026 and on the Antwerp pages on 27 October 2026. `
-  + `From those dates GA4 only counts visitors who accept analytics cookies: those who refuse, and those who never answer the banner, are no longer in any figure on this page. `
-  + `Over 27 to 29 October, GA4 counted about half the Antwerp sessions it saw on the same weekdays a week earlier, AI sessions included. `
-  + `A drop from week 44 onwards is therefore largely a measurement effect, not a fall in demand.`;
+  + `From those dates GA4 only counts visitors who accept analytics cookies: those who refuse, and those who never answer the banner, are no longer in any GA4 figure on this page. `
+  + `Matomo, which counts every visitor without cookies, measures the gap: from July to mid-October GA4 saw about 90 to 95% of Matomo's traffic (the two tools never count exactly alike; May and June are lower because the sites were still moving to production), and the coverage chart above shows what is left since. `
+  + `From week 44 onwards, follow the dashed Matomo line for AI traffic: a drop in the GA4 line is largely a measurement effect, not a fall in demand.`;
 
-const mainHead = ['Period','AI sessions','AI share of sessions','Google AI impressions','AI revenue','Online revenue','AI share of revenue','AI transactions','B2B views from AI','B2B landings from AI'];
+const mainHead = ['Period','AI sessions','AI share of sessions','Matomo AI visits','GA4 coverage','Google AI impressions','AI revenue','Online revenue','AI share of revenue','AI transactions','B2B views from AI','B2B landings from AI'];
 function mainTable(venue){
   return '<table><thead><tr>' + mainHead.map((h,i) => `<th class="${i?'num':'txt'}">${h}</th>`).join('') + '</tr></thead><tbody>' +
     R.buckets.map((b,i) => {
@@ -514,6 +539,8 @@ function mainTable(venue){
         : `${b.label} <span class="tag">${b.sub}</span>`;
       return `<tr class="${cls}"><td class="txt">${period}</td>
         <td class="num">${nf1.format(v.ai_sessions)}</td><td class="num">${pct2(v.share)}</td>
+        <td class="num${v.matomo_ai == null ? ' dim' : ''}">${v.matomo_ai == null ? '–' : nf1.format(v.matomo_ai)}</td>
+        <td class="num${v.coverage == null ? ' dim' : ''}">${v.coverage == null ? '–' : nf.format(v.coverage) + '%'}</td>
         <td class="num${v.gai_impressions == null ? ' dim' : ''}">${v.gai_impressions == null ? '–' : nf.format(v.gai_impressions)}</td>
         <td class="num">${eur(v.ai_revenue)}</td><td class="num">${eur(v.revenue)}</td>
         <td class="num">${pct2(v.revenue_share)}</td><td class="num">${nf1.format(v.ai_transactions)}</td>
@@ -565,13 +592,14 @@ document.getElementById('method').innerHTML = `<h3>How each number is produced</
 <li><b>Revenue before May 2026.</b> Venue-level revenue is empty in January to April: until the cross-domain tracking changed in May, bookings were recorded on sessions that had no /antwerp/ or /eupen/ landing page. Site-wide online revenue is available for the whole period.</li>
 <li><b>Traffic share before May 2026.</b> Site-wide session volume roughly doubled in week 20 for a measurement reason, not a business one. Absolute AI session counts stay comparable across the whole window because they are based on the referrer; the percentages are only strictly comparable from May onwards.</li>
 <li><b>Antwerp history.</b> The /antwerp/ pages only exist in this GA4 property from 8 December 2025, so there is no earlier Antwerp baseline.</li>
+<li><b>Matomo.</b> Matomo (hosted by Pixelbar, sites 234 Antwerp and 235 Eupen) runs on the same pages without cookies, so it counts every visitor whatever their answer to the banner. Its "AI Assistants" channel classifies visits by referrer, like GA4's AI rule. It is pulled every morning through the Matomo API. Its data starts on 18 May 2026, so earlier periods are empty and May is averaged over its weeks with data. GA4 coverage is GA4 sessions divided by Matomo visits over the same weeks.</li>
 <li><b>Cookie consent.</b> Since 22 October 2026 (Eupen) and 27 October 2026 (Antwerp), GA4 only records visitors who accept analytics cookies. Visitors who refuse or ignore the banner leave no session, no AI session and no revenue in GA4. Figures before and after those dates are not directly comparable. Search Console impressions are not affected: they are counted by Google, not on the site.</li>
 <li><b>Google AI impressions.</b> Read from Search Console's "Generative AI" report (Performance), which counts impressions in AI Overviews and AI Mode together, with no clicks. Google does not offer this report through its API, so the daily figures are read in the Search Console interface and stored in gsc_ai_impressions_daily.csv. Each venue uses its own property, https://www.experience-factory.com/antwerp/ and https://www.experience-factory.com/eupen/, never a shared total. Search Console days follow Pacific time, GA4 days follow Brussels time, so a single day can differ slightly between the two; the weekly trend is not affected. The data starts on 18 May 2026.</li>
 <li><b>Bing AI citations.</b> Read from Bing Webmaster Tools' "AI Performance" report (public preview), on the property https://www.experience-factory.com/, then split by venue from each cited address. Bing does not offer this report through its API either, so it is read in the interface and stored in bing_ai_citations_daily.csv (per day and venue, zeros included) and bing_ai_pages_daily.csv (per day and page). The report starts on 12 October 2026 and Bing describes it as a sample of overall activity.</li>
 </ul>`;
 
 document.getElementById('foot').innerHTML =
-  `Experience Factory · AI Traffic Watch · rebuilt every morning at 09:00 Brussels time · as-of ${R.asof_label} · sources GA4 property 355017554, Search Console (Generative AI report) and Bing Webmaster Tools (AI Performance)`;
+  `Experience Factory · AI Traffic Watch · rebuilt every morning at 09:00 Brussels time · as-of ${R.asof_label} · sources GA4 property 355017554, Matomo sites 234 and 235, Search Console (Generative AI report) and Bing Webmaster Tools (AI Performance)`;
 </script>
 </body>
 </html>

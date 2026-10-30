@@ -27,6 +27,7 @@ SESSION_FIELDS = [
 ]
 PAGE_FIELDS = ["ai_screenPageViews", "all_screenPageViews", "ai_sessions", "all_sessions",
                "ai_entrances", "all_entrances"]
+MATOMO_FIELDS = ["visits", "ai_visits"]
 
 B2B_GROUPS = [
     ("Antwerp - Teambuilding hub", "antwerp", [
@@ -141,11 +142,37 @@ def build_payload(asof):
     win_start, win_end = bl[0]["start"].isoformat(), bl[-1]["end"].isoformat()
     for venue in ("antwerp", "eupen", "all"):
         S.fill(bl, sess_idx, (venue,), SESSION_FIELDS)
+
+    # Matomo: every visitor, cookie banner or not. A week counts once Matomo has visits in
+    # it (its data starts 18 May 2026); coverage = GA4 sessions / Matomo visits over the
+    # same weeks, so it shows how much of the traffic GA4 still sees.
+    mat_path = os.path.join(S.DATA, "matomo_daily.csv")
+    mat_idx = S.weekly(S.read("matomo_daily.csv"), ["venue"], None, MATOMO_FIELDS, weeks) if os.path.exists(mat_path) else {}
+    matomo_last = {}
+    if os.path.exists(mat_path):
+        for r in S.read("matomo_daily.csv"):
+            if float(r["visits"] or 0) > 0:
+                matomo_last[r["venue"]] = max(matomo_last.get(r["venue"], ""), r["date"])
+    matomo = {}
+    for i, b in enumerate(bl):
+        for venue in ("antwerp", "eupen"):
+            used = [w for w in b["weeks"] if mat_idx.get(w, {}).get((venue,), {}).get("visits", 0) > 0]
+            if not used:
+                matomo[(i, venue)] = {"matomo_visits": None, "matomo_ai": None, "coverage": None}
+                continue
+            m_visits = sum(mat_idx[w][(venue,)]["visits"] for w in used)
+            m_ai = sum(mat_idx[w][(venue,)]["ai_visits"] for w in used)
+            ga = sum(sess_idx.get(w, {}).get((venue,), {}).get("all_sessions", 0) for w in used)
+            matomo[(i, venue)] = {
+                "matomo_visits": round(m_visits / len(used), 1),
+                "matomo_ai": round(m_ai / len(used), 1),
+                "coverage": round(safe_div(ga, m_visits) * 100, 1),
+            }
     for page in B2B_PAGES:
         S.fill(bl, b2b_idx, (page,), PAGE_FIELDS)
 
     buckets = []
-    for b in bl:
+    for bi, b in enumerate(bl):
         entry = {
             "label": b["label"],
             "sub": b["sub"],
@@ -168,6 +195,8 @@ def build_payload(asof):
                 "engagement": round(safe_div(d["all_engagedSessions"], d["all_sessions"]) * 100, 1),
                 "revenue_share": round(safe_div(d["ai_purchaseRevenue"], d["all_purchaseRevenue"]) * 100, 2),
             }
+            if venue != "all":
+                entry[venue].update(matomo[(bi, venue)])
         # AI money share is measured against ALL online revenue, both hosts
         entry["money"] = {
             "ai_revenue_venues": round(entry["antwerp"]["ai_revenue"] + entry["eupen"]["ai_revenue"], 2),
@@ -297,6 +326,7 @@ def build_payload(asof):
         "baseline": {k: round(v, 1) for k, v in base.items()},
         "gai_through": gsc_last,
         "bing_through": bing_last,
+        "matomo_through": matomo_last,
         "bing_pages": bing_pages,
         "assistants": assistants,
     }

@@ -58,6 +58,7 @@ jobs:
         env:
           GA4_SA_JSON: ${{ secrets.GA4_SA_JSON }}
           GA4_PROPERTY_ID: ${{ vars.GA4_PROPERTY_ID || '355017554' }}
+          MATOMO_TOKEN: ${{ secrets.MATOMO_TOKEN }}
         run: python scripts/pull.py ${{ github.event.inputs.asof && format('--asof {0}', github.event.inputs.asof) || '' }}
 
       - name: Build the report

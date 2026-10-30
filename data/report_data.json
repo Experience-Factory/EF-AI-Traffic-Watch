@@ -1,5 +1,5 @@
 {
- "generated": "30 Oct 2026, 09:10",
+ "generated": "30 Oct 2026, 09:55",
  "asof": "2026-10-30",
  "asof_label": "Friday 30 October 2026",
  "week_label": "19 Oct - 25 Oct 2026",
@@ -35,6 +35,9 @@
     "ai_engagement": 75.6,
     "engagement": 75.0,
     "revenue_share": 0.0,
+    "matomo_visits": null,
+    "matomo_ai": null,
+    "coverage": null,
     "b2b": {
      "ai_views": 0.8,
      "ai_sessions": 1.0,
@@ -57,6 +60,9 @@
     "ai_engagement": 76.0,
     "engagement": 75.7,
     "revenue_share": 0.0,
+    "matomo_visits": null,
+    "matomo_ai": null,
+    "coverage": null,
     "b2b": {
      "ai_views": 0.2,
      "ai_sessions": 0.2,
@@ -106,6 +112,9 @@
     "ai_engagement": 76.8,
     "engagement": 76.7,
     "revenue_share": 0.0,
+    "matomo_visits": null,
+    "matomo_ai": null,
+    "coverage": null,
     "b2b": {
      "ai_views": 1.8,
      "ai_sessions": 1.0,
@@ -128,6 +137,9 @@
     "ai_engagement": 88.9,
     "engagement": 78.2,
     "revenue_share": 0.0,
+    "matomo_visits": null,
+    "matomo_ai": null,
+    "coverage": null,
     "b2b": {
      "ai_views": 0.0,
      "ai_sessions": 0.0,
@@ -177,6 +189,9 @@
     "ai_engagement": 73.0,
     "engagement": 61.0,
     "revenue_share": 0.68,
+    "matomo_visits": 11223.0,
+    "matomo_ai": 37.0,
+    "coverage": 96.5,
     "b2b": {
      "ai_views": 5.5,
      "ai_sessions": 3.5,
@@ -199,6 +214,9 @@
     "ai_engagement": 76.5,
     "engagement": 67.1,
     "revenue_share": 0.0,
+    "matomo_visits": 3381.0,
+    "matomo_ai": 12.0,
+    "coverage": 60.4,
     "b2b": {
      "ai_views": 0.0,
      "ai_sessions": 0.0,
@@ -248,6 +266,9 @@
     "ai_engagement": 67.8,
     "engagement": 57.1,
     "revenue_share": 0.53,
+    "matomo_visits": 9319.0,
+    "matomo_ai": 34.8,
+    "coverage": 77.1,
     "b2b": {
      "ai_views": 1.8,
      "ai_sessions": 1.5,
@@ -270,6 +291,9 @@
     "ai_engagement": 69.2,
     "engagement": 65.0,
     "revenue_share": 0.0,
+    "matomo_visits": 3232.5,
+    "matomo_ai": 13.8,
+    "coverage": 57.3,
     "b2b": {
      "ai_views": 0.8,
      "ai_sessions": 0.5,
@@ -319,6 +343,9 @@
     "ai_engagement": 74.0,
     "engagement": 56.5,
     "revenue_share": 0.0,
+    "matomo_visits": 9827.4,
+    "matomo_ai": 47.4,
+    "coverage": 93.4,
     "b2b": {
      "ai_views": 3.0,
      "ai_sessions": 3.0,
@@ -341,6 +368,9 @@
     "ai_engagement": 76.9,
     "engagement": 56.6,
     "revenue_share": 0.0,
+    "matomo_visits": 3155.4,
+    "matomo_ai": 14.2,
+    "coverage": 90.7,
     "b2b": {
      "ai_views": 0.2,
      "ai_sessions": 0.2,
@@ -390,6 +420,9 @@
     "ai_engagement": 78.1,
     "engagement": 62.3,
     "revenue_share": 1.0,
+    "matomo_visits": 11779.2,
+    "matomo_ai": 148.0,
+    "coverage": 92.4,
     "b2b": {
      "ai_views": 6.8,
      "ai_sessions": 6.5,
@@ -412,6 +445,9 @@
     "ai_engagement": 80.0,
     "engagement": 66.0,
     "revenue_share": 2.82,
+    "matomo_visits": 3173.0,
+    "matomo_ai": 29.8,
+    "coverage": 89.0,
     "b2b": {
      "ai_views": 0.2,
      "ai_sessions": 0.2,
@@ -461,6 +497,9 @@
     "ai_engagement": 80.7,
     "engagement": 61.8,
     "revenue_share": 1.39,
+    "matomo_visits": 8902.0,
+    "matomo_ai": 153.0,
+    "coverage": 91.8,
     "b2b": {
      "ai_views": 20.0,
      "ai_sessions": 16.0,
@@ -483,6 +522,9 @@
     "ai_engagement": 68.4,
     "engagement": 56.2,
     "revenue_share": 0.0,
+    "matomo_visits": 3014.0,
+    "matomo_ai": 37.0,
+    "coverage": 88.2,
     "b2b": {
      "ai_views": 4.0,
      "ai_sessions": 2.0,
@@ -532,6 +574,9 @@
     "ai_engagement": 78.0,
     "engagement": 61.8,
     "revenue_share": 1.67,
+    "matomo_visits": 10990.0,
+    "matomo_ai": 166.0,
+    "coverage": 93.6,
     "b2b": {
      "ai_views": 11.0,
      "ai_sessions": 13.0,
@@ -554,6 +599,9 @@
     "ai_engagement": 79.5,
     "engagement": 54.8,
     "revenue_share": 0.0,
+    "matomo_visits": 3813.0,
+    "matomo_ai": 34.0,
+    "coverage": 91.4,
     "b2b": {
      "ai_views": 2.0,
      "ai_sessions": 2.0,
@@ -603,6 +651,9 @@
     "ai_engagement": 74.6,
     "engagement": 58.2,
     "revenue_share": 0.0,
+    "matomo_visits": 11723.0,
+    "matomo_ai": 179.0,
+    "coverage": 93.3,
     "b2b": {
      "ai_views": 5.0,
      "ai_sessions": 7.0,
@@ -625,6 +676,9 @@
     "ai_engagement": 85.2,
     "engagement": 47.1,
     "revenue_share": 0.0,
+    "matomo_visits": 4293.0,
+    "matomo_ai": 33.0,
+    "coverage": 91.8,
     "b2b": {
      "ai_views": 0.0,
      "ai_sessions": 0.0,
@@ -674,6 +728,9 @@
     "ai_engagement": 76.9,
     "engagement": 59.0,
     "revenue_share": 0.0,
+    "matomo_visits": 11350.0,
+    "matomo_ai": 160.0,
+    "coverage": 93.8,
     "b2b": {
      "ai_views": 11.0,
      "ai_sessions": 9.0,
@@ -696,6 +753,9 @@
     "ai_engagement": 87.0,
     "engagement": 48.2,
     "revenue_share": 0.0,
+    "matomo_visits": 3754.0,
+    "matomo_ai": 25.0,
+    "coverage": 88.7,
     "b2b": {
      "ai_views": 0.0,
      "ai_sessions": 0.0,
@@ -745,6 +805,9 @@
     "ai_engagement": 78.8,
     "engagement": 60.6,
     "revenue_share": 0.0,
+    "matomo_visits": 10979.0,
+    "matomo_ai": 174.0,
+    "coverage": 93.7,
     "b2b": {
      "ai_views": 6.0,
      "ai_sessions": 4.0,
@@ -767,6 +830,9 @@
     "ai_engagement": 80.8,
     "engagement": 50.0,
     "revenue_share": 0.0,
+    "matomo_visits": 3906.0,
+    "matomo_ai": 25.0,
+    "coverage": 92.7,
     "b2b": {
      "ai_views": 0.0,
      "ai_sessions": 0.0,
@@ -816,6 +882,9 @@
     "ai_engagement": 78.5,
     "engagement": 64.2,
     "revenue_share": 0.0,
+    "matomo_visits": 10868.0,
+    "matomo_ai": 192.0,
+    "coverage": 94.9,
     "b2b": {
      "ai_views": 9.0,
      "ai_sessions": 9.0,
@@ -838,6 +907,9 @@
     "ai_engagement": 82.4,
     "engagement": 55.3,
     "revenue_share": 0.0,
+    "matomo_visits": 3437.0,
+    "matomo_ai": 18.0,
+    "coverage": 90.2,
     "b2b": {
      "ai_views": 0.0,
      "ai_sessions": 0.0,
@@ -887,6 +959,9 @@
     "ai_engagement": 79.2,
     "engagement": 63.8,
     "revenue_share": 0.0,
+    "matomo_visits": 11651.0,
+    "matomo_ai": 202.0,
+    "coverage": 95.0,
     "b2b": {
      "ai_views": 13.0,
      "ai_sessions": 15.0,
@@ -909,6 +984,9 @@
     "ai_engagement": 71.9,
     "engagement": 54.6,
     "revenue_share": 0.0,
+    "matomo_visits": 3937.0,
+    "matomo_ai": 35.0,
+    "coverage": 93.1,
     "b2b": {
      "ai_views": 0.0,
      "ai_sessions": 0.0,
@@ -958,6 +1036,9 @@
     "ai_engagement": 79.0,
     "engagement": 65.0,
     "revenue_share": 1.24,
+    "matomo_visits": 14095.0,
+    "matomo_ai": 311.0,
+    "coverage": 89.2,
     "b2b": {
      "ai_views": 25.0,
      "ai_sessions": 22.0,
@@ -980,6 +1061,9 @@
     "ai_engagement": 90.6,
     "engagement": 68.6,
     "revenue_share": 0.0,
+    "matomo_visits": 4740.0,
+    "matomo_ai": 58.0,
+    "coverage": 72.6,
     "b2b": {
      "ai_views": 0.0,
      "ai_sessions": 0.0,
@@ -1229,6 +1313,9 @@
    "ai_engagement": 79.0,
    "engagement": 65.0,
    "revenue_share": 1.24,
+   "matomo_visits": 14095.0,
+   "matomo_ai": 311.0,
+   "coverage": 89.2,
    "b2b": {
     "ai_views": 25.0,
     "ai_sessions": 22.0,
@@ -1251,6 +1338,9 @@
    "ai_engagement": 90.6,
    "engagement": 68.6,
    "revenue_share": 0.0,
+   "matomo_visits": 4740.0,
+   "matomo_ai": 58.0,
+   "coverage": 72.6,
    "b2b": {
     "ai_views": 0.0,
     "ai_sessions": 0.0,
@@ -1300,6 +1390,9 @@
    "ai_engagement": 79.2,
    "engagement": 63.8,
    "revenue_share": 0.0,
+   "matomo_visits": 11651.0,
+   "matomo_ai": 202.0,
+   "coverage": 95.0,
    "b2b": {
     "ai_views": 13.0,
     "ai_sessions": 15.0,
@@ -1322,6 +1415,9 @@
    "ai_engagement": 71.9,
    "engagement": 54.6,
    "revenue_share": 0.0,
+   "matomo_visits": 3937.0,
+   "matomo_ai": 35.0,
+   "coverage": 93.1,
    "b2b": {
     "ai_views": 0.0,
     "ai_sessions": 0.0,
@@ -1365,6 +1461,10 @@
  "bing_through": {
   "antwerp": "2026-10-27",
   "eupen": "2026-10-27"
+ },
+ "matomo_through": {
+  "antwerp": "2026-10-29",
+  "eupen": "2026-10-29"
  },
  "bing_pages": [
   {
