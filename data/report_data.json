@@ -1,5 +1,5 @@
 {
- "generated": "30 Oct 2026, 08:24",
+ "generated": "30 Oct 2026, 08:40",
  "asof": "2026-10-30",
  "asof_label": "Friday 30 October 2026",
  "week_label": "19 Oct - 25 Oct 2026",
@@ -912,8 +912,8 @@
      "ai_entrances": 6.0,
      "views": 615.0
     },
-    "gai_impressions": null,
-    "gai_weeks": 0
+    "gai_impressions": 4009.0,
+    "gai_weeks": 1
    },
    "eupen": {
     "ai_sessions": 53.0,
@@ -932,8 +932,8 @@
      "ai_entrances": 0.0,
      "views": 0.0
     },
-    "gai_impressions": null,
-    "gai_weeks": 0
+    "gai_impressions": 1441.0,
+    "gai_weeks": 1
    },
    "all": {
     "ai_sessions": 423.0,
@@ -1179,8 +1179,8 @@
     "ai_entrances": 6.0,
     "views": 615.0
    },
-   "gai_impressions": null,
-   "gai_weeks": 0
+   "gai_impressions": 4009.0,
+   "gai_weeks": 1
   },
   "eupen": {
    "ai_sessions": 53.0,
@@ -1199,8 +1199,8 @@
     "ai_entrances": 0.0,
     "views": 0.0
    },
-   "gai_impressions": null,
-   "gai_weeks": 0
+   "gai_impressions": 1441.0,
+   "gai_weeks": 1
   },
   "all": {
    "ai_sessions": 423.0,
@@ -1295,7 +1295,7 @@
   "all": 67.2
  },
  "gai_through": {
-  "antwerp": "2026-10-20",
-  "eupen": "2026-10-20"
+  "antwerp": "2026-10-29",
+  "eupen": "2026-10-29"
  }
 }
