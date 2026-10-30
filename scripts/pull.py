@@ -6,6 +6,7 @@ rows outside the current window are kept, so history accumulates):
   sessions_daily.csv   per day and venue, AI vs all traffic and revenue
   b2b_daily.csv        per day and B2B page, AI vs all views/sessions/entrances
   ai_sources_daily.csv per day and assistant, sessions
+  ai_sources_venue_daily.csv per day, venue and assistant, sessions and revenue
 
 Usage:  python scripts/pull.py [--asof YYYY-MM-DD] [--start YYYY-MM-DD]
 """
@@ -23,6 +24,7 @@ DATA = os.path.join(os.path.dirname(HERE), "data")
 VENUES = ["antwerp", "eupen", "all"]
 SESSION_METRICS = ["sessions", "purchaseRevenue", "transactions", "keyEvents", "engagedSessions"]
 PAGE_METRICS = ["screenPageViews", "sessions"]
+SOURCE_METRICS = ["sessions", "purchaseRevenue", "transactions"]
 # GA4 Data API has no "entrances" metric: landings are counted with a second query
 # on landingPagePlusQueryString, whose session count is exactly the entrance count.
 LANDING_METRICS = ["sessions"]
@@ -128,6 +130,25 @@ def pull_sources(cl, start, end):
     return out
 
 
+def pull_sources_venue(cl, start, end):
+    """Per day, venue and AI source: sessions and the revenue booked in them."""
+    out = []
+    for venue in ("antwerp", "eupen"):
+        filt = ga.and_all(ga.venue_filter(venue), ga.ai_filter())
+        for dims, mets in ga.run(
+            cl, ["date", "sessionSource"], SOURCE_METRICS, start, end, filt
+        ):
+            row = {
+                "date": dt.datetime.strptime(dims[0], "%Y%m%d").date().isoformat(),
+                "venue": venue,
+                "source": dims[1],
+            }
+            for m, v in zip(SOURCE_METRICS, mets):
+                row[m] = num(v)
+            out.append(row)
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--asof", default=None, help="pretend the run happens on this date")
@@ -169,6 +190,15 @@ def main():
         ["date", "source"],
     )
     print(f"[pull] ai_sources_daily.csv {len(rows):5d} rows pulled, {n} total")
+
+    rows = pull_sources_venue(cl, start, end)
+    n = merge_csv(
+        os.path.join(DATA, "ai_sources_venue_daily.csv"),
+        ["date", "venue", "source"] + SOURCE_METRICS,
+        rows,
+        ["date", "venue", "source"],
+    )
+    print(f"[pull] ai_sources_venue_daily.csv {len(rows):5d} rows pulled, {n} total")
 
 
 if __name__ == "__main__":

@@ -132,6 +132,17 @@ footer a{color:#D6D8DA}
       <div class="legend"><span><i style="background:var(--red)"></i>Antwerp</span><span><i style="background:var(--teal)"></i>Eupen</span></div>
       <div class="chart" id="c_share"></div>
     </div>
+    <p class="note" id="consentnote"></p>
+  </section>
+
+  <section>
+    <h2>Assistants</h2>
+    <div class="lead">Which assistant sent the visit, for each venue</div>
+    <h3 class="tabtitle"><i style="background:var(--red)"></i>Antwerp</h3>
+    <div class="tablewrap" id="t_asst_antwerp"></div>
+    <h3 class="tabtitle"><i style="background:var(--teal)"></i>Eupen</h3>
+    <div class="tablewrap" id="t_asst_eupen"></div>
+    <p class="note" id="asstnote"></p>
   </section>
 
   <section>
@@ -439,6 +450,30 @@ chart('c_b2b', {
 });
 
 /* ---------- tables ---------- */
+const asstHead = ['Assistant','GA4 source','AI sessions last week','AI sessions over the window','Share of AI sessions','AI revenue over the window','AI transactions'];
+function asstTable(venue){
+  const rows = R.assistants[venue] || [];
+  const tot = rows.reduce((t,a) => ({s:t.s+a.sessions, l:t.l+a.last_week, r:t.r+a.revenue, x:t.x+a.transactions}), {s:0,l:0,r:0,x:0});
+  return '<table><thead><tr>' + asstHead.map((h,i) => `<th class="${i<2?'txt':'num'}">${h}</th>`).join('') + '</tr></thead><tbody>' +
+    rows.map(a => `<tr><td class="txt">${a.name}</td><td class="txt dim">${a.sources.join(', ')}</td>
+      <td class="num">${nf.format(a.last_week)}</td><td class="num">${nf.format(a.sessions)}</td>
+      <td class="num">${nf1.format(a.share)}%</td><td class="num">${eur(a.revenue)}</td>
+      <td class="num">${nf.format(a.transactions)}</td></tr>`).join('') +
+    `<tr class="total"><td class="txt">All assistants</td><td></td><td class="num">${nf.format(tot.l)}</td>
+      <td class="num">${nf.format(tot.s)}</td><td class="num">100%</td><td class="num">${eur(tot.r)}</td>
+      <td class="num">${nf.format(tot.x)}</td></tr></tbody></table>`;
+}
+document.getElementById('t_asst_antwerp').innerHTML = asstTable('antwerp');
+document.getElementById('t_asst_eupen').innerHTML = asstTable('eupen');
+document.getElementById('asstnote').innerHTML =
+  `Totals cover the whole window shown above (${R.buckets[0].start} to ${R.buckets[R.buckets.length-1].end}); "last week" is week ${R.week_number}. `
+  + `An assistant only appears once it has sent at least one visit. Its revenue is GA4 purchase revenue booked in the session it started, with the same under-reporting as in the Money section.`;
+document.getElementById('consentnote').innerHTML =
+  `<b>Cookie banner.</b> A consent banner went live on the Eupen pages on 22 October 2026 and on the Antwerp pages on 27 October 2026. `
+  + `From those dates GA4 only counts visitors who accept analytics cookies: those who refuse, and those who never answer the banner, are no longer in any figure on this page. `
+  + `Over 27 to 29 October, GA4 counted about half the Antwerp sessions it saw on the same weekdays a week earlier, AI sessions included. `
+  + `A drop from week 44 onwards is therefore largely a measurement effect, not a fall in demand.`;
+
 const mainHead = ['Period','AI sessions','AI share of sessions','Google AI impressions','AI revenue','Online revenue','AI share of revenue','AI transactions','B2B views from AI','B2B landings from AI'];
 function mainTable(venue){
   return '<table><thead><tr>' + mainHead.map((h,i) => `<th class="${i?'num':'txt'}">${h}</th>`).join('') + '</tr></thead><tbody>' +
@@ -501,6 +536,7 @@ document.getElementById('method').innerHTML = `<h3>How each number is produced</
 <li><b>Revenue before May 2026.</b> Venue-level revenue is empty in January to April: until the cross-domain tracking changed in May, bookings were recorded on sessions that had no /antwerp/ or /eupen/ landing page. Site-wide online revenue is available for the whole period.</li>
 <li><b>Traffic share before May 2026.</b> Site-wide session volume roughly doubled in week 20 for a measurement reason, not a business one. Absolute AI session counts stay comparable across the whole window because they are based on the referrer; the percentages are only strictly comparable from May onwards.</li>
 <li><b>Antwerp history.</b> The /antwerp/ pages only exist in this GA4 property from 8 December 2025, so there is no earlier Antwerp baseline.</li>
+<li><b>Cookie consent.</b> Since 22 October 2026 (Eupen) and 27 October 2026 (Antwerp), GA4 only records visitors who accept analytics cookies. Visitors who refuse or ignore the banner leave no session, no AI session and no revenue in GA4. Figures before and after those dates are not directly comparable. Search Console impressions are not affected: they are counted by Google, not on the site.</li>
 <li><b>Google AI impressions.</b> Read from Search Console's "Generative AI" report (Performance), which counts impressions in AI Overviews and AI Mode together, with no clicks. Google does not offer this report through its API, so the daily figures are read in the Search Console interface and stored in gsc_ai_impressions_daily.csv. Each venue uses its own property, https://www.experience-factory.com/antwerp/ and https://www.experience-factory.com/eupen/, never a shared total. Search Console days follow Pacific time, GA4 days follow Brussels time, so a single day can differ slightly between the two; the weekly trend is not affected. The data starts on 18 May 2026.</li>
 </ul>`;
 

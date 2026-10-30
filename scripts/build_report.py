@@ -52,6 +52,28 @@ B2B_GROUPS = [
     ]),
 ]
 B2B_PAGES = [p for _, _, pages in B2B_GROUPS for p, _ in pages]
+
+# GA4 source -> assistant. Checked in order; the first match wins. The same
+# assistant can arrive under several sources (perplexity, perplexity.ai).
+ASSISTANTS = [
+    ("ChatGPT", ("chatgpt", "openai")),
+    ("Copilot", ("copilot",)),
+    ("Gemini", ("gemini", "bard")),
+    ("Perplexity", ("perplexity",)),
+    ("Claude", ("claude",)),
+    ("Mistral", ("mistral",)),
+    ("DeepSeek", ("deepseek",)),
+    ("Grok", ("grok",)),
+    ("Meta AI", ("meta.ai",)),
+]
+
+
+def assistant_of(source):
+    s = source.lower()
+    for name, keys in ASSISTANTS:
+        if any(k in s for k in keys):
+            return name
+    return "Other"
 B2B_PAGE_VENUE = {p: venue for _, venue, pages in B2B_GROUPS for p, _ in pages}
 
 
@@ -199,6 +221,43 @@ def build_payload(asof):
             entry[venue]["gai_impressions"] = round(sum(full) / len(full), 1) if full else None
             entry[venue]["gai_weeks"] = len(full)
 
+    # assistant split per venue: last complete week + whole window, sessions and revenue
+    win_start, win_end = bl[0]["start"].isoformat(), bl[-1]["end"].isoformat()
+    last_start = bl[-1]["start"].isoformat()
+    split = {}
+    for r in S.read("ai_sources_venue_daily.csv"):
+        if not (win_start <= r["date"] <= win_end):
+            continue
+        a = split.setdefault(r["venue"], {}).setdefault(
+            assistant_of(r["source"]),
+            {"sessions": 0.0, "revenue": 0.0, "transactions": 0.0, "last_week": 0.0, "sources": set()},
+        )
+        a["sessions"] += float(r["sessions"] or 0)
+        a["revenue"] += float(r["purchaseRevenue"] or 0)
+        a["transactions"] += float(r["transactions"] or 0)
+        a["sources"].add(r["source"])
+        if r["date"] >= last_start:
+            a["last_week"] += float(r["sessions"] or 0)
+    assistants = {}
+    for venue in ("antwerp", "eupen"):
+        rows = split.get(venue, {})
+        total = sum(a["sessions"] for a in rows.values())
+        assistants[venue] = sorted(
+            (
+                {
+                    "name": name,
+                    "sessions": round(a["sessions"]),
+                    "share": round(safe_div(a["sessions"], total) * 100, 1),
+                    "last_week": round(a["last_week"]),
+                    "revenue": round(a["revenue"], 2),
+                    "transactions": round(a["transactions"]),
+                    "sources": sorted(a["sources"]),
+                }
+                for name, a in rows.items()
+            ),
+            key=lambda x: -x["sessions"],
+        )
+
     last, prev = buckets[-1], buckets[-2]
     baseline_buckets = [b for b in buckets if b["kind"] == "avg"]
     base = {
@@ -221,6 +280,7 @@ def build_payload(asof):
         "prev": prev,
         "baseline": {k: round(v, 1) for k, v in base.items()},
         "gai_through": gsc_last,
+        "assistants": assistants,
     }
 
 

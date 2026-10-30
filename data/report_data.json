@@ -1,5 +1,5 @@
 {
- "generated": "30 Oct 2026, 08:40",
+ "generated": "30 Oct 2026, 08:53",
  "asof": "2026-10-30",
  "asof_label": "Friday 30 October 2026",
  "week_label": "19 Oct - 25 Oct 2026",
@@ -1297,5 +1297,122 @@
  "gai_through": {
   "antwerp": "2026-10-29",
   "eupen": "2026-10-29"
+ },
+ "assistants": {
+  "antwerp": [
+   {
+    "name": "ChatGPT",
+    "sessions": 2948,
+    "share": 98.6,
+    "last_week": 315,
+    "revenue": 1282.0,
+    "transactions": 10,
+    "sources": [
+     "chatgpt.com"
+    ]
+   },
+   {
+    "name": "Copilot",
+    "sessions": 25,
+    "share": 0.8,
+    "last_week": 0,
+    "revenue": 0.0,
+    "transactions": 0,
+    "sources": [
+     "copilot.com"
+    ]
+   },
+   {
+    "name": "Gemini",
+    "sessions": 11,
+    "share": 0.4,
+    "last_week": 2,
+    "revenue": 0.0,
+    "transactions": 0,
+    "sources": [
+     "gemini.google.com"
+    ]
+   },
+   {
+    "name": "Perplexity",
+    "sessions": 4,
+    "share": 0.1,
+    "last_week": 1,
+    "revenue": 0.0,
+    "transactions": 0,
+    "sources": [
+     "perplexity",
+     "perplexity.ai"
+    ]
+   },
+   {
+    "name": "Claude",
+    "sessions": 2,
+    "share": 0.1,
+    "last_week": 1,
+    "revenue": 0.0,
+    "transactions": 0,
+    "sources": [
+     "claude.ai"
+    ]
+   }
+  ],
+  "eupen": [
+   {
+    "name": "ChatGPT",
+    "sessions": 563,
+    "share": 96.1,
+    "last_week": 51,
+    "revenue": 596.0,
+    "transactions": 3,
+    "sources": [
+     "chatgpt.com"
+    ]
+   },
+   {
+    "name": "Copilot",
+    "sessions": 11,
+    "share": 1.9,
+    "last_week": 0,
+    "revenue": 0.0,
+    "transactions": 0,
+    "sources": [
+     "copilot.com"
+    ]
+   },
+   {
+    "name": "Gemini",
+    "sessions": 8,
+    "share": 1.4,
+    "last_week": 0,
+    "revenue": 0.0,
+    "transactions": 0,
+    "sources": [
+     "gemini.google.com"
+    ]
+   },
+   {
+    "name": "Perplexity",
+    "sessions": 3,
+    "share": 0.5,
+    "last_week": 2,
+    "revenue": 0.0,
+    "transactions": 0,
+    "sources": [
+     "perplexity"
+    ]
+   },
+   {
+    "name": "Claude",
+    "sessions": 1,
+    "share": 0.2,
+    "last_week": 0,
+    "revenue": 0.0,
+    "transactions": 0,
+    "sources": [
+     "claude.ai"
+    ]
+   }
+  ]
  }
 }
